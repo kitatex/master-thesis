@@ -1,1 +1,3 @@
-# thesis-social-issues
+# Master Thesis Code
+
+Leon Olszewski
