@@ -28,4 +28,4 @@ for line in lines:
         out_lines.append(line)
 
 template_path.write_text("\n".join(out_lines), encoding="utf-8")
-print(f"✅ Generated {template_path}")
+print(f"Generated {template_path}")
