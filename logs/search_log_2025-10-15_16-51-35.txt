@@ -1,0 +1,5 @@
+2025-10-15 16:51:35 [INFO] Reading posts from 'C:\Users\leond\Documents\02 REPOS\06 master thesis\master-thesis\data\topics\climatechange\posts.jsonl' (JSON Lines format)...
+2025-10-15 16:51:35 [INFO] Processed 6,445 lines.
+2025-10-15 16:51:35 [INFO] Found 6,328 unique posts.
+2025-10-15 16:51:35 [INFO] Removed 117 duplicate or invalid posts.
+2025-10-15 16:51:35 [INFO] Successfully saved unique posts to 'C:\Users\leond\Documents\02 REPOS\06 master thesis\master-thesis\data\topics\climatechange\posts_deduplicated.jsonl'
