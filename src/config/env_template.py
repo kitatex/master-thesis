@@ -1,6 +1,7 @@
 from pathlib import Path
 import re
 
+
 # Path to your .env file
 env_path = Path(".env")
 template_path = Path(".env_template")
