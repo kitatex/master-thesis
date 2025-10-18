@@ -41,18 +41,18 @@ def obtain_closest_hashtags(tf_counts: dict, ht_counts_path: Path):
         return
 
     with open(ht_counts_path, "rb") as f:
-        ht_counts_dict = orjson.loads(f.read())
+        ht_counts_dict = dict(orjson.loads(f.read()))
 
     tfidf_scores = {}
     for ht, term_frequency in tf_counts.items():
-        doc_frequency = ht_counts_dict.get(ht, 0)
+        doc_frequency = ht_counts_dict.get(ht, 1)
 
         # Avoid division by zero and log of zero issues.
         if doc_frequency > 0:
             idf = math.log(TOTAL_POSTS_NUMBER / doc_frequency)
             tfidf_scores[ht] = term_frequency * idf
         else:
-            print(tf_counts)
+            print(doc_frequency)
             raise ValueError(
                 f"The doc_frequency of {ht} is 0, which should never occur since we are using subsets of the main corpus."
             )
