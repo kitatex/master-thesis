@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+from src.config.constants import USE_TEST_DATA
+
 load_dotenv()
 
 
@@ -12,13 +14,6 @@ def require_env(key: str) -> str:
         raise EnvironmentError(f"Missing required environment variable: {key}")
     return value
 
-
-# Data source toggle
-USE_TEST_DATA = os.getenv("USE_TEST_DATA", "false").lower() == "true"
-
-# Process
-MAX_WORKERS = int(os.getenv("MAX_WORKERS", 8))
-VERBOSE = os.getenv("VERBOSE", "false").lower() == "true"
 
 # Paths
 CURRENT_INPUT_PATH = Path(require_env("CURRENT_INPUT_PATH"))

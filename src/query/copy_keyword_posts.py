@@ -2,12 +2,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import orjson
 import time
 
-from config.variables import (
-    PATH_USER_POSTS,
-    TOPICS_OUTPUT_PATH,
-    MAX_WORKERS,
-    VERBOSE,
-)
+from src.config.paths import PATH_USER_POSTS, TOPICS_OUTPUT_PATH
+from src.config.constants import MAX_WORKERS, VERBOSE
 from src.config.logging import logger
 
 # --- Manual ---

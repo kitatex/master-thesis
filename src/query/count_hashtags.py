@@ -6,7 +6,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 import time
 
-from src.config.variables import PATH_USER_POSTS, MAX_WORKERS, GENERAL_OUTPUT_PATH
+from src.config.constants import MAX_WORKERS
+from src.config.paths import PATH_USER_POSTS, GENERAL_OUTPUT_PATH
 from src.config.logging import logger
 from src.util.functions import find_hashtags
 
