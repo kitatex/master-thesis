@@ -16,6 +16,7 @@ def require_env(key: str) -> str:
 
 
 # Paths
+REPO_DIR_PATH = Path(require_env("REPO_DIR_PATH"))
 CURRENT_INPUT_PATH = Path(require_env("CURRENT_INPUT_PATH"))
 CURRENT_OUTPUT_PATH = Path(require_env("CURRENT_OUTPUT_PATH"))
 DATA_BASE_PATH = Path(require_env("DATA_BASE_PATH"))

@@ -6,7 +6,7 @@ from collections import defaultdict
 from src.util.functions import find_hashtags
 from src.config.logging import logger
 from src.config.constants import TOTAL_POSTS_NUMBER
-from src.config.variables import (
+from config.paths import (
     CURRENT_INPUT_PATH,
     HASHTAG_COUNTS_PATH,
     CURRENT_OUTPUT_PATH,

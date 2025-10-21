@@ -8,9 +8,10 @@ from src.config.logging import logger
 
 # --- Manual ---
 # Set keyword(s) to search for (case-insensitive)
-KEYWORDS = ["#climatechange"]
+KEYWORDS = ["#blackhistorymonth", "blackhistorymonth"]
+
 # Topic name within data/ dir
-OUTPUT_FILE = TOPICS_OUTPUT_PATH / "climatechange/posts.jsonl"
+OUTPUT_FILE = TOPICS_OUTPUT_PATH / f"{KEYWORDS[0]}/posts.jsonl"
 
 
 def find_posts_with_keyword(file_path):
@@ -38,6 +39,9 @@ def main():
 
     if OUTPUT_FILE.exists():
         OUTPUT_FILE.unlink()
+    else:
+        OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+        OUTPUT_FILE.touch()
 
     files = list(PATH_USER_POSTS.glob("*.jsonl"))
     total_files = len(files)

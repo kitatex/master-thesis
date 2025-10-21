@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
-from src.config.variables import VERBOSE
+from src.config.constants import VERBOSE
 
 # Create a timestamped log file name
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
