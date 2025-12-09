@@ -5,13 +5,19 @@ import time
 from src.config.paths import PATH_USER_POSTS, TOPICS_OUTPUT_PATH
 from src.config.constants import MAX_WORKERS, VERBOSE
 from src.config.logging import logger
+from src.util.functions import extract_hashtags_from_file
 
-# --- Manual ---
+# --- Manual Keywords ---
 # Set keyword(s) to search for (case-insensitive)
-KEYWORDS = ["#blackhistorymonth", "blackhistorymonth"]
-
+KEYWORDS = ["#climatecrisis"]
 # Topic name within data/ dir
 OUTPUT_FILE = TOPICS_OUTPUT_PATH / f"{KEYWORDS[0]}/posts.jsonl"
+
+
+# --- Keywords from File ---
+path = "C:/Users/leond/Documents/02 REPOS/06 master thesis/master-thesis/data/topics/#climatecrisis/co-hashtags_clean.txt"
+KEYWORDS = extract_hashtags_from_file(path)
+OUTPUT_FILE = TOPICS_OUTPUT_PATH / "#climatecrisis/co-hashtags/posts.jsonl"
 
 
 def find_posts_with_keyword(file_path):
