@@ -15,6 +15,7 @@ def extract_hashtags_from_file(file_path: str) -> list[str]:
     Returns:
         A list of strings, where each string is a hashtag from the file.
     """
+
     # Initialize an empty list to store the extracted hashtags
     hashtags = []
 
@@ -29,7 +30,10 @@ def extract_hashtags_from_file(file_path: str) -> list[str]:
         # even though we only extract the quoted string.
         # The re.findall() function returns a list of all captured groups.
         pattern = r'"([^"]*)"'
-        hashtags = re.findall(pattern, content)
+        hashtags_words = re.findall(pattern, content)
+
+        # Add a '#' symbol before each hashtag
+        hashtags = [f"#{ht}" for ht in hashtags_words]
 
         print(f"Returning list of {len(hashtags)} hashtags")
         print(f"Preview of list beginning: {hashtags[0:5]}")

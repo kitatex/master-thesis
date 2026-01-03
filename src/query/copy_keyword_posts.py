@@ -15,7 +15,7 @@ OUTPUT_FILE = TOPICS_OUTPUT_PATH / f"{KEYWORDS[0]}/posts.jsonl"
 
 
 # --- Keywords from File ---
-path = "C:/Users/leond/Documents/02 REPOS/06 master thesis/master-thesis/data/topics/#climatecrisis/co-hashtags_clean.txt"
+path = "C:/Users/leond/Documents/02-REPOS/06 master thesis/master-thesis/data/topics/#climatecrisis/co-hashtags_clean.txt"
 KEYWORDS = extract_hashtags_from_file(path)
 OUTPUT_FILE = TOPICS_OUTPUT_PATH / "#climatecrisis/co-hashtags/posts.jsonl"
 
@@ -28,8 +28,13 @@ def find_posts_with_keyword(file_path):
                 try:
                     data = orjson.loads(line)
                     text = data.get("text", "").lower()
+                    langs = data.get("langs", [])
 
-                    if any(k in text for k in KEYWORDS):
+                    if (
+                        any(k in text for k in KEYWORDS)
+                        and isinstance(langs, list)
+                        and langs == ["eng"]
+                    ):
                         matches.append(data)
                         if VERBOSE:
                             logger.info(f"Found a relevant post: {text}")
