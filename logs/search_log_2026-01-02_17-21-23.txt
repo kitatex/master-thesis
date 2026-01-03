@@ -1,0 +1,3 @@
+2026-01-02 17:21:23 [INFO] Starting search for [] in C:\Users\leond\Documents\03 FILES\01 - data\Bluesky Data September 2025\user_posts with 0 files...
+2026-01-02 17:21:23 [INFO] Results will be saved to data\topics\#climatecrisis\co-hashtags\posts.jsonl
+2026-01-02 17:21:31 [INFO] Aborted by user.
