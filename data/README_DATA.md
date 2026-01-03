@@ -2,6 +2,7 @@
 
 ## Bluesky Data Format
 todo
+maybe just reference to zenodo link
 
 
 ## General Querying Pipeline
@@ -10,13 +11,14 @@ todo / mention:
 more detailed instructions in the .py files at the top
 how did i choose my discussion topics?
 
+
 ### Post corpus
 
 Process for obtaining data for a *discussion topic* (e.g., climate change, football) based on a *seed hashtag*:
 
 - **Step 1**: For a discussion topic of your choice, select a seed hashtag that clearly represents the discussion topic and around which the data set will be built. You can use the hashtag counts list in ``data/general/`` to pick a seed hashtag of your choice.
 
-- **Step 2**: Use ``copy_keyword_posts.py`` to obtain an initial corpus of posts which contain that hashtag.
+- **Step 2**: Use [``copy_keyword_posts.py``](../src/query/copy_keyword_posts.py) to obtain an initial corpus of posts which contain that hashtag.
 
 - **Step 3**: Deduplicate posts using ``deduplicate_posts.py`` because the original data contains duplicates.
 
@@ -24,10 +26,11 @@ Process for obtaining data for a *discussion topic* (e.g., climate change, footb
 
 - **Step 5**: From the ranked list from Step 4, manually select the top $k$ hashtags that will later be used to obtain posts for the discussion topic based on related keywords with tf-idf. It is important to omit hashtags which do not represent the issue well enough according to predefined criteria.
 
-- **Step 6**: Use ``copy_keyword_posts.py`` to obtain an initial corpus of posts which contain the co-hashtags selected from Step 5.
+- **Step 6**: Use [``copy_keyword_posts.py``](../src/query/copy_keyword_posts.py) to obtain an initial corpus of posts which contain the co-hashtags selected from Step 5.
 
 todo:
 - **Step 7**: obtain keywords that represent seed hashtag and co-hashtags (important to also capture posts that don't use hashtags)
+
 - **Step 8**: query posts that contain keywords (define a logic. e.g., have to contain at least keywords?? or statistical technique)
 
 ### Graph
@@ -56,9 +59,14 @@ First, 5 discussion topics are selected that represent a *political issue*.
 
 Political issues:
 - *black people's rights*: based on #listentoblackvoices with 30482 occurrences in the data (rank 82)
+
 - *war in gaza*: based on #freepalestine with 19026 occurrences in the data (rank 155)
+
 - *war in ukraine*: based on #ukrainianview with 14417 occurrences in the data (rank 213)
+
 - *climate change*: based on #climatecrisis with 6504 occurrences in the data (rank 519)
+    - Current Step: 6 (30-12-2025)
+
 - *trans rights*: based on #climatecrisis with 3235 occurrences in the data (rank 1175)
 
 Non-political Issues:
