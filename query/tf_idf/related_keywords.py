@@ -6,12 +6,12 @@ from typing import List, Optional
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Adjust these imports to match your project structure
-from src.config.paths import (
+from query.config.paths import (
     BACKGROUND_CORPUS_PATH,
     CURRENT_INPUT_PATH,
     CURRENT_OUTPUT_PATH,
 )
-from src.config.logging import logger
+from query.config.logging import logger
 
 
 # --- Set Paths ---

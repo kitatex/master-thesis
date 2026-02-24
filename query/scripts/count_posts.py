@@ -4,9 +4,9 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from builtins import enumerate
 
-from src.config.constants import MAX_WORKERS
-from src.config.paths import PATH_USER_POSTS, GENERAL_OUTPUT_PATH
-from src.config.logging import logger
+from query.config.constants import MAX_WORKERS
+from query.config.paths import PATH_USER_POSTS, GENERAL_OUTPUT_PATH
+from query.config.logging import logger
 
 
 OUTPUT_FILE = GENERAL_OUTPUT_PATH / "post_counts.json"

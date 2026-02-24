@@ -1,7 +1,7 @@
 import json
 
-from src.config.paths import CURRENT_INPUT_PATH, CURRENT_OUTPUT_PATH
-from src.config.logging import logger
+from query.config.paths import CURRENT_INPUT_PATH, CURRENT_OUTPUT_PATH
+from query.config.logging import logger
 
 # --- Config ---
 threshold = 100

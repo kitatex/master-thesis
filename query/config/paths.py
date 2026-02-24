@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-from src.config.constants import USE_TEST_DATA
+from query.config.constants import USE_TEST_DATA
 
 load_dotenv()
 

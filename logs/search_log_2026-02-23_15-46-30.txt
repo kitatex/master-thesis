@@ -1,0 +1,4 @@
+2026-02-23 15:48:42 [INFO] Loaded 484 keywords and 21 topics.
+2026-02-23 15:48:42 [INFO] Starting search in C:\Users\leond\Documents\03-FILES\01 data\Bluesky Data September 2025\user_posts across 2,363,248 files...
+2026-02-23 15:48:42 [INFO] Results will be saved to data\topics\univie\topic_posts.jsonl
+2026-02-23 15:58:11 [INFO] Aborted by user.

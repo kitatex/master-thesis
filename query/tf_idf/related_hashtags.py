@@ -3,10 +3,10 @@ import orjson
 import math
 from collections import defaultdict
 
-from src.util.functions import find_hashtags
-from src.config.logging import logger
-from src.config.constants import TOTAL_POSTS_NUMBER
-from src.config.paths import (
+from query.util.functions import find_hashtags
+from query.config.logging import logger
+from query.config.constants import TOTAL_POSTS_NUMBER
+from query.config.paths import (
     CURRENT_INPUT_PATH,
     HASHTAG_COUNTS_PATH,
     CURRENT_OUTPUT_PATH,

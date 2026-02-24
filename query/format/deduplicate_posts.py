@@ -2,8 +2,8 @@ import orjson
 from pathlib import Path
 from typing import List, Dict, Any
 
-from src.config.paths import CURRENT_INPUT_PATH, CURRENT_OUTPUT_PATH
-from src.config.logging import logger
+from query.config.paths import CURRENT_INPUT_PATH, CURRENT_OUTPUT_PATH
+from query.config.logging import logger
 
 
 def deduplicate_posts_by_id(

@@ -1,6 +1,6 @@
 import re
 
-from src.config.constants import HASHTAG_REGEX
+from query.config.constants import HASHTAG_REGEX
 
 
 def find_hashtags(text: str) -> list[str]:
