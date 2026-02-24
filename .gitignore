@@ -14,3 +14,5 @@ query/__pycache__/
 
 
 *.excalidraw
+
+datasets/univie
