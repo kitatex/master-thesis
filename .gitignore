@@ -12,6 +12,7 @@ query/__pycache__/
 
 .ruff_cache/
 
+logs/
 
 *.excalidraw
 

@@ -1,0 +1,16 @@
+{
+    "folder-path-color.folders": [
+        {
+            "path": "query",
+            "color": "custom3"
+        },
+        {
+            "path": "datasets",
+            "color": "custom1"
+        },
+        {
+            "path": "graphs",
+            "color": "blue"
+        },
+    ],
+}
