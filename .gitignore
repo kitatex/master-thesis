@@ -1,3 +1,4 @@
+# Python environment installation files
 .env
 .venv/
 
@@ -9,11 +10,14 @@ query/__pycache__/
 *.pyc
 *.pyo
 *.pyd
-
 .ruff_cache/
 
+# Logs and documentation
 logs/
-
 *.excalidraw
 
-datasets/univie/
+# Data typically too large for GitHub
+datasets/topics/
+
+# todo delete:
+datasets/univie/  

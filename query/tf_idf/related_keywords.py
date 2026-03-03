@@ -5,22 +5,23 @@ from pathlib import Path
 from typing import List, Optional
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-# Adjust these imports to match your project structure
-from query.config.paths import (
-    BACKGROUND_CORPUS_PATH,
-    CURRENT_INPUT_PATH,
-    CURRENT_OUTPUT_PATH,
-)
+from query.config.paths import BACKGROUND_CORPUS_PATH
 from query.config.logging import logger
 
+"""
+Based on a hashtag corpus file (seed + co-hashtags), obtain the top n related keywords
+that are used when discussing the target topic. The ranking is done using tf-idf, using
+a large random sample from the entire Bluesky dataset for normalization.
+
+SEED_HASHTAG_CORPUS (.jsonl): Path to the hashtag corpus.
+
+OUTPUT_CSV (.jsonl): Path where the ranked keyword list will be saved
+"""
 
 # --- Set Paths ---
+SEED_HASHTAG_CORPUS = Path("")
 
-# The hashtag corpus
-TOPIC_FILE = CURRENT_INPUT_PATH
-
-# Where to save the resulting csv
-OUTPUT_CSV = CURRENT_OUTPUT_PATH
+OUTPUT_CSV = Path("")
 
 # Optional: exclude the seed hashtags themselves (exclusively finds new words)
 TOP_N_KEYWORDS = 100
@@ -176,7 +177,7 @@ def get_representative_keywords(
 
 if __name__ == "__main__":
     df = get_representative_keywords(
-        TOPIC_FILE,
+        SEED_HASHTAG_CORPUS,
         BACKGROUND_CORPUS_PATH,
         top_n=TOP_N_KEYWORDS,
         exclude_words=SEEDS_TO_EXCLUDE,

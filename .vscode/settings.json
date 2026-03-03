@@ -12,5 +12,9 @@
             "path": "graphs",
             "color": "blue"
         },
+        {
+            "path": "analysis",
+            "color": "cyan"
+        },
     ],
 }

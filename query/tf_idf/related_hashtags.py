@@ -6,10 +6,22 @@ from collections import defaultdict
 from query.util.functions import find_hashtags
 from query.config.logging import logger
 from query.config.constants import TOTAL_POSTS_NUMBER
-from query.config.paths import (
-    CURRENT_INPUT_PATH,
-    HASHTAG_COUNTS_PATH,
-    CURRENT_OUTPUT_PATH,
+from query.config.paths import HASHTAG_COUNTS_PATH
+
+"""
+After obtaining a corpus for a seed hashtag, this script can be used to related
+co-hashtags. The HASHTAG_COUNTS_PATH file is used to normalize using tf-idf.
+
+CURRENT_INPUT_PATH (.jsonl): Path to the seed hashtag corpus.
+
+CURRENT_OUTPUT_PATH (.jsonl): Path where the ranked hashtag list will be saved.
+"""
+
+CURRENT_INPUT_PATH = Path(
+    "C:/Users/leond/Documents/02-REPOS/06 master thesis/master-thesis/datasets/topics/#neuroscience/seed_hashtag/posts.jsonl"
+)
+CURRENT_OUTPUT_PATH = Path(
+    "C:/Users/leond/Documents/02-REPOS/06 master thesis/master-thesis/datasets/topics/#neuroscience/co_hashtags/closest_hashtags.jsonl"
 )
 
 

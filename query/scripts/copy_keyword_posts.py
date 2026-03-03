@@ -9,16 +9,16 @@ from query.util.functions import extract_hashtags_from_file
 
 # --- Manual Keywords ---
 # Set keyword(s) to search for (case-insensitive)
-KEYWORDS = ["#climatecrisis"]
+KEYWORDS = ["#gamedev"]
 # Topic name within data/ dir
 OUTPUT_FILE = TOPICS_OUTPUT_PATH / f"{KEYWORDS[0]}/posts.jsonl"
 
 
 # --- Keywords from File ---
-path = "C:/Users/leond/Documents/02-REPOS/06 master thesis/master-thesis/datasets/topics/#climatecrisis/co-hashtags_clean.txt"
-KEYWORDS = extract_hashtags_from_file(path)
+# path = "C:/Users/leond/Documents/02-REPOS/06 master thesis/master-thesis/datasets/topics/#climatecrisis/co-hashtags_clean.txt"
+# KEYWORDS = extract_hashtags_from_file(path)
 # OUTPUT_FILE = TOPICS_OUTPUT_PATH / "#climatecrisis/co-hashtags/posts.jsonl"
-OUTPUT_FILE = TOPICS_OUTPUT_PATH / "univie_data/sie_posts.jsonl"
+# OUTPUT_FILE = TOPICS_OUTPUT_PATH / "testetsetsetset/etsetsetsete.jsonl"
 
 
 def find_posts_with_keyword(file_path):
