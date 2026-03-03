@@ -1,6 +1,0 @@
-2026-01-03 13:09:39 [INFO] Reading posts from 'C:\Users\leond\Documents\02-REPOS\06 master thesis\master-thesis\data\topics\#climatecrisis\co-hashtags\posts.jsonl' (JSON Lines format)...
-2026-01-03 13:09:39 [INFO] Processed 39,890 lines.
-2026-01-03 13:09:39 [INFO] Retained 39,519 strictly English posts.
-2026-01-03 13:09:39 [INFO] Filtered out 371 non-English or mixed-language posts.
-2026-01-03 13:09:39 [INFO] Writing 39,519 posts to 'C:\Users\leond\Documents\02-REPOS\06 master thesis\master-thesis\data\topics\#climatecrisis\co-hashtags\posts_eng.jsonl' in JSON Lines format...
-2026-01-03 13:09:39 [INFO] Successfully saved English posts to 'C:\Users\leond\Documents\02-REPOS\06 master thesis\master-thesis\data\topics\#climatecrisis\co-hashtags\posts_eng.jsonl'

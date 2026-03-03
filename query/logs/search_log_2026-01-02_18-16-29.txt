@@ -1,6 +1,0 @@
-2026-01-02 18:16:29 [INFO] Reading posts from 'C:\Users\leond\Documents\02-REPOS\06 master thesis\master-thesis\data\topics\#climatecrisis\posts_deduplicated.jsonl' (JSON Lines format)...
-2026-01-02 18:16:29 [INFO] Processed 6,379 lines.
-2026-01-02 18:16:29 [INFO] Retained 5,357 strictly English posts.
-2026-01-02 18:16:29 [INFO] Filtered out 1,022 non-English or mixed-language posts.
-2026-01-02 18:16:29 [INFO] Writing 5,357 posts to 'C:\Users\leond\Documents\02-REPOS\06 master thesis\master-thesis\data\topics\#climatecrisis\posts_deduplicated_eng.jsonl' in JSON Lines format...
-2026-01-02 18:16:29 [INFO] Successfully saved English posts to 'C:\Users\leond\Documents\02-REPOS\06 master thesis\master-thesis\data\topics\#climatecrisis\posts_deduplicated_eng.jsonl'

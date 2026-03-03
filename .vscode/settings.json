@@ -1,7 +1,7 @@
 {
     "folder-path-color.folders": [
         {
-            "path": "query",
+            "path": "data_processing",
             "color": "custom3"
         },
         {
@@ -10,11 +10,11 @@
         },
         {
             "path": "graphs",
-            "color": "blue"
+            "color": "green"
         },
         {
             "path": "analysis",
-            "color": "cyan"
+            "color": "blue"
         },
     ],
 }

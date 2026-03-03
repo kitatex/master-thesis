@@ -1,3 +1,0 @@
-2026-01-03 13:56:21 [INFO] Loading corpora...
-2026-01-03 13:56:21 [ERROR] Failed to load corpus from C:\Users\leond\Documents\02-REPOS\06 master thesis\master-thesis\data\topics\#climatecrisis\hashtag_corpus\posts.jsonl: unexpected content after document: line 2 column 1 (char 489)
-2026-01-03 13:56:21 [ERROR] One or both corpora are empty. Exiting.

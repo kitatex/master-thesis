@@ -2,7 +2,7 @@ import pandas as pd
 import igraph as ig
 
 
-PARQUET_FILE = "C:/Users/leond/Documents/02-REPOS/06 master thesis/master-thesis/datasets/topics/#climatecrisis/graph/climatecrisis_edgelist.parquet"
+PARQUET_FILE = ""
 
 
 def analyze_structural_network(parquet_path):

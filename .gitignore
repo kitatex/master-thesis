@@ -4,7 +4,7 @@
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
-query/__pycache__/
+data_processing/__pycache__/
 *.py[cod]
 *$py.class
 *.pyc
@@ -21,3 +21,4 @@ datasets/topics/
 
 # todo delete:
 datasets/univie/  
+data_processing/query/copy_univie_posts.py
