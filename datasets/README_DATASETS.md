@@ -50,27 +50,48 @@ Documents the choices made during the data querying process for my master thesis
 ### Discussion Topics & Seed Hashtags (Step 1)
 todo
 criteria for manually choosing seed hashtags:
-- topic fits the definition of social issue
+- topic fits the definition of a political issue
 - not generic / too broad (e.g., #politics, #science)
 - seed hashtags represents the political discussion around that topic
 end
+- idea: topic has to allow controversy / different stances
+- maybe: search for discussion topics in the first place and then for a hashtag representation
 
-First, 5 discussion topics are selected that represent a *political issue*. 
+First, discussion topics are selected that represent a *political issue*. 
 
 Political issues:
-- *black people's rights*: based on #listentoblackvoices with 30482 occurrences in the data (rank 82)
 
-- *war in gaza*: based on #freepalestine with 19026 occurrences in the data (rank 155)
 
-- *war in ukraine*: based on #ukrainianview with 14417 occurrences in the data (rank 213)
+- *war in ukraine*: based on #ukraine with 19369 occurrences in the data (rank 77)
 
-- *climate change*: based on #climatecrisis with 6504 occurrences in the data (rank 519)
-    - Current Step: 6 (30-12-2025)
+- *war in gaza*: based on #gaza with 13435 occurrences in the data (119)
 
-- *trans rights*: based on #climatecrisis with 3235 occurrences in the data (rank 1175)
+- *climate change*: based on #climatechange with 5288 occurrences in the data (rank 365)
+
+- #aiethics? smaller number
+
+
 
 Non-political Issues:
-- s
+
+selection criteria: should have text (to allow semantic data extraction), not controversial, 
+
+some ideas:
+
+"gamedev": 22466 - Game development
+
+"historicalfiction": 13152 - Book discussion
+
+"musicsky": 5229 - Music discussion
+
+
+
+
+discarded
+
+"supportartists": 19062 - Supporting artists - because often used as an appended hashtag only
+
+
 
 
 
