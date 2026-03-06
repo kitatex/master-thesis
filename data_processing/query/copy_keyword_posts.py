@@ -17,8 +17,8 @@ If len(KEYWORDS) > 1, then the first keyword is used as identifier.
 OUTPUT_FILE (.jsonl): Output location.
 """
 
-KEYWORDS = ["#listentoblackvoices"]
-OUTPUT_FILE = TOPICS_PATH / f"{KEYWORDS[0]}/posts.jsonl"
+KEYWORDS = ["#gaza", "#climatechange", "#musicsky", "#historicalfiction"]
+OUTPUT_FILE = TOPICS_PATH / f"{KEYWORDS[0]}/seed_hashtag/posts.jsonl"
 
 
 # --- Keywords from File ---

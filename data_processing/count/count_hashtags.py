@@ -11,7 +11,7 @@ from data_processing.util.functions import get_post_hashtags, iter_jsonl
 
 
 """
-Creates a dict of all hashtags in the data and their occurrences.
+Creates a dict of all hashtags in the data and their occurrences (ranked in descending order).
 """
 
 OUTPUT_FILE = GENERAL_PATH / "hashtag_counts_new.json"
