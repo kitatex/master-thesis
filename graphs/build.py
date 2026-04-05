@@ -13,7 +13,7 @@ INPUT_DATA (.jsonl): The data from which the graph is built.
 OUTPUT_DIR: Directory where the graphs are saved.
 """
 
-TOPIC_NAME = "#climatecrisis"  # e.g., #climatecrisis
+TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
 
 INPUT_DATA = TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts_deduplicated.jsonl"
 

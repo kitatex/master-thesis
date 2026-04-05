@@ -3,7 +3,11 @@ import orjson
 import time
 from pathlib import Path
 
-from data_processing.util.functions import iter_jsonl, get_post_hashtags
+from data_processing.util.functions import (
+    iter_jsonl,
+    get_post_hashtags,
+    extract_hashtags_from_jsonl,
+)
 from data_processing.config.paths import PATH_USER_POSTS, TOPICS_PATH
 from data_processing.config.constants import MAX_WORKERS, VERBOSE
 from data_processing.config.logging import logger
@@ -12,20 +16,26 @@ from data_processing.config.logging import logger
 Copy the posts which contain specified keywords (typically, hashtags).
 
 KEYWORDS (List[str]): A list of keywords whose occurences will cause a post to be copied from the full dataset.
-If len(KEYWORDS) > 1, then the first keyword is used as identifier.
+If len(KEYWORDS) > 1, then the first keyword is used as identifier. Can also be read from a file.
 
 OUTPUT_FILE (.jsonl): Output location.
 """
 
-KEYWORDS = ["#gaza", "#climatechange", "#musicsky", "#historicalfiction"]
-OUTPUT_FILE = TOPICS_PATH / f"{KEYWORDS[0]}/seed_hashtag/posts.jsonl"
+KEYWORDS = [
+    "#gaza",
+    "#climatechange",
+    "#aiethics",
+    "#musicsky",
+    "#historicalfiction",
+    "#dadjokes",
+]
 
 
-# --- Keywords from File ---
-# from data_processing.util.functions import extract_hashtags_from_file
-# path = TOPICS_PATH / f"{KEYWORDS[0]}/co_hashtags_clean.txt"
-# KEYWORDS = extract_hashtags_from_file(path)
-# OUTPUT_FILE = TOPICS_PATH / "#climatecrisis/co_hashtags/posts.jsonl"
+path = TOPICS_PATH / "_multiple/20260405/keywords.jsonl"
+KEYWORDS = extract_hashtags_from_jsonl(path)
+
+
+OUTPUT_FILE = TOPICS_PATH / "_multiple/20260405/posts.jsonl"
 
 
 def find_posts_with_keyword(file_path: Path):

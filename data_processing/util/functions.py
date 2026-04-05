@@ -1,4 +1,3 @@
-import re
 import orjson
 from pathlib import Path
 from typing import Generator
@@ -11,36 +10,39 @@ def find_hashtags(text: str) -> list[str]:
     return HASHTAG_REGEX.findall(text)
 
 
-def extract_hashtags_from_file(file_path: str) -> list[str]:
+def extract_hashtags_from_jsonl(file_path: str | Path) -> list[str]:
     """
     Args:
-        file_path: The path to the .txt file.
+        file_path: Path to the .jsonl (or .json) file.
 
     Returns:
-        A list of strings, where each string is a hashtag from the file.
+        A list of hashtags (with leading '#').
     """
 
-    # Initialize an empty list to store the extracted hashtags
-    hashtags = []
+    file_path = Path(file_path)
 
     try:
-        # Open the file for reading
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, "rb") as f:
             content = f.read()
 
-        # Regular expression to find any text enclosed in double quotes (")
-        # The pattern '"([^"]*)"' captures the content inside the quotes.
-        # It handles the specific format by looking for a pattern like: "hashtag": number
-        # even though we only extract the quoted string.
-        # The re.findall() function returns a list of all captured groups.
-        pattern = r'"([^"]*)"'
-        hashtags_words = re.findall(pattern, content)
+        data = orjson.loads(content)
 
-        # Add a '#' symbol before each hashtag
-        hashtags = [f"#{ht}" for ht in hashtags_words]
+        # Case 1: your example (single JSON object / dict)
+        if isinstance(data, dict):
+            hashtags = [f"#{ht}" for ht in data.keys()]
+
+        # Case 2: true JSONL (one JSON object per line)
+        elif isinstance(data, list):
+            hashtags = []
+            for obj in data:
+                if isinstance(obj, dict):
+                    hashtags.extend(f"#{ht}" for ht in obj.keys())
+
+        else:
+            raise ValueError("Unsupported JSON structure")
 
         print(f"Returning list of {len(hashtags)} hashtags")
-        print(f"Preview of list beginning: {hashtags[0:5]}")
+        print(f"Preview of list beginning: {hashtags[:5]}")
 
         return hashtags
 

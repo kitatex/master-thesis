@@ -17,7 +17,8 @@ INPUT_PATH (.jsonl): Path to the seed hashtag corpus.
 OUTPUT_PATH (.jsonl): Path where the ranked hashtag list will be saved.
 """
 
-TOPIC_NAME = "#climatecrisis"  # e.g., #climatecrisis
+
+TOPIC_NAME = "#dadjokes"  # e.g., #climatecrisis
 
 INPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/seed_hashtag/posts_deduplicated.jsonl"
 
@@ -81,19 +82,19 @@ def main():
     if tf_results:
         closest_hashtags = obtain_closest_hashtags(tf_results, HASHTAG_COUNTS_PATH)
 
-        if closest_hashtags:
-            try:
-                with open(OUTPUT_PATH, "wb") as out_f:
-                    out_f.write(
-                        orjson.dumps(closest_hashtags, option=orjson.OPT_INDENT_2)
-                    )
-                logger.info(f"Results saved to: {OUTPUT_PATH}")
-                logger.info("\n--- Output ---")
-                logger.info(
-                    orjson.dumps(closest_hashtags, option=orjson.OPT_INDENT_2).decode()
-                )
-            except IOError as e:
-                logger.error(f"Could not write to output file {OUTPUT_PATH}: {e}")
+    if closest_hashtags:
+        try:
+            OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+            with open(OUTPUT_PATH, "wb") as out_f:
+                out_f.write(orjson.dumps(closest_hashtags, option=orjson.OPT_INDENT_2))
+            logger.info(f"Results saved to: {OUTPUT_PATH}")
+            logger.info("\n--- Output ---")
+            logger.info(
+                orjson.dumps(closest_hashtags, option=orjson.OPT_INDENT_2).decode()
+            )
+        except IOError as e:
+            logger.error(f"Could not write to output file {OUTPUT_PATH}: {e}")
 
 
 if __name__ == "__main__":

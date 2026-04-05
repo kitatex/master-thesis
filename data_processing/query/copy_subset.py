@@ -1,7 +1,11 @@
 import orjson
-from pathlib import Path
-from data_processing.util.functions import iter_jsonl, get_post_hashtags
+from data_processing.util.functions import (
+    iter_jsonl,
+    get_post_hashtags,
+    extract_hashtags_from_jsonl,
+)
 from data_processing.config.logging import logger
+from data_processing.config.paths import TOPICS_PATH
 
 """
 This script is used to make subsequent queries for keywords (hashtags) from a single
@@ -12,12 +16,14 @@ TARGET_HASHTAGS (List)
 OUTPUT_FILE (.jsonl)
 """
 
+INPUT_SUBSET = TOPICS_PATH / "_multiple/20260405/posts.jsonl"
 
-INPUT_SUBSET = Path("path/to/your/large_subset.jsonl")
+# TARGET_HASHTAGS = ["#ukraine"]
 
-TARGET_HASHTAGS = ["#climatechange", "#globalwarming", "#cop28"]
+path = TOPICS_PATH / "#aiethics/co_hashtags/chosen_closest_hashtags.jsonl"
+TARGET_HASHTAGS = extract_hashtags_from_jsonl(path)
 
-OUTPUT_FILE = Path("data/topics/climate/posts_filtered.jsonl")
+OUTPUT_FILE = TOPICS_PATH / "#aiethics/co_hashtags/posts_co_hashtags.jsonl"
 
 
 def filter_subset():
@@ -40,7 +46,6 @@ def filter_subset():
         for post in iter_jsonl(INPUT_SUBSET):
             total_processed += 1
 
-            # Use your exact same hashtag extraction logic
             post_tags = get_post_hashtags(post)
 
             # Check for intersection

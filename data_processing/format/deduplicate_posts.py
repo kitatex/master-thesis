@@ -6,11 +6,11 @@ from data_processing.config.logging import logger
 from data_processing.config.paths import TOPICS_PATH
 
 
-TOPIC_NAME = "#climatecrisis"  # e.g., #climatecrisis
+TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
 
-INPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/seed_hashtag/posts.jsonl"
+INPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts.jsonl"
 
-OUTPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/seed_hashtag/posts_deduplicated.jsonl"
+OUTPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts_deduplicated.jsonl"
 
 
 def deduplicate_posts_by_id(

@@ -65,7 +65,7 @@ def prepare_and_visualize(g_giant, partition):
         edge_color="rgba(200, 200, 200, 0.5)",
         vertex_frame_width=0.1,
     )
-    plt.title("Bluesky #climatecrisis: Top 5 Structural Communities")
+    plt.title("Bluesky Top 5 Structural Communities")
     plt.show()
 
 
