@@ -21,10 +21,13 @@ DATA_BASE_PATH = Path(require_env("DATA_BASE_PATH"))
 DATA_TEST_PATH = Path(require_env("DATA_TEST_PATH"))
 USER_POSTS_DIR = Path(require_env("USER_POSTS"))
 
-TOPICS_PATH = Path(require_env("TOPICS_PATH"))
-GENERAL_PATH = Path(require_env("GENERAL_PATH"))
 
-HASHTAG_COUNTS_PATH = Path(require_env("HASHTAG_COUNTS_PATH"))
+GENERAL_PATH = Path(require_env("GENERAL_PATH"))
+TOPICS_PATH = Path(require_env("TOPICS_PATH"))
+HT_CORPORA_PATH = Path(require_env("HT_CORPORA_PATH"))
+
+
+HT_COUNTS_PATH = Path(require_env("HT_COUNTS_PATH"))
 BACKGROUND_CORPUS_PATH = Path(require_env("BACKGROUND_CORPUS_PATH"))
 
 # Derive more paths

@@ -7,7 +7,6 @@ The data is an open dataset which can be accessed [here](https://zenodo.org/reco
 
 # General Querying Pipeline
 
-
 ### Post corpus
 
 Process for obtaining data for a *discussion topic* (e.g., climate change, football) based on a *seed hashtag*:
@@ -20,29 +19,25 @@ Process for obtaining data for a *discussion topic* (e.g., climate change, footb
 
 - **Step 4**: Create a ranked list of the closest hashtags to the seed hashtags using [``related_hashtags.py``](../data_processing/tf_idf/related_hashtags.py). The closest hashtags are ranked using tf-idf scores, so that hashtags which are generally unpopular but co-occur highly with the seed hashtag get a higher score (and vice-versa).
 
-- **Step 5**: From the ranked list from Step 4, manually select the top $k$ hashtags that will later be used to obtain posts for the discussion topic based on related keywords with tf-idf. It is important to omit hashtags which do not represent the issue well enough according to predefined criteria.
-Do this by copying the output file (e.g., ``closest_hashtags.jsonl``) and deleting the first and last rows (the brackets) and all hashtags which are not relevant. Then. convert to .txt.
+- **Step 5**: Filter the list from Step 4 by selecting the top $k$ hashtags that are related to the seed hashtag according to some previously defined criteria. Work directly in a respective copy of the ranked tf-idf .jsonl (e.g., ``closest_hashtags.jsonl``). 
 For this project, $k=20$ was chosen since Garimella et al. (2018) did so similarly.
 
 - **Step 6**: Use [``copy_keyword_posts.py``](../data_processing/query/copy_keyword_posts.py) to obtain an initial corpus of posts which contain the co-hashtags selected from Step 5.
 
-todo:
-- **Step 7**: obtain keywords that represent seed hashtag and co-hashtags (important to also capture posts that don't use hashtags)
-
-- **Step 8**: query posts that contain keywords (define a logic. e.g., have to contain at least keywords?? or statistical technique)
+- **Step 7**: Join the posts from the seed hashtags and co-hastags. Then, deduplicate to obtain the **hashtag corpus**.
 
 
-### Graph Building
+todo: describe a rule for including posts which do not use hashtags. Maybe with a fast classifier
 
-- **Step x**: obtain structural data based on the post corpus to construct a network (first, i think just work with retweets. Either a network with weighted edges (how many retweets or log(retweets) as weights) OR min 2 retweets to form an edge; compare Garimella)
+- **Step 8**: obtain keywords that represent seed hashtag and co-hashtags (important to also capture posts that don't use hashtags)
+
+- **Step 9**: query posts that contain keywords (define a logic. e.g., have to contain at least keywords?? or statistical technique)
 
 
 
 
 # Documentation Data Querying Thesis
-todo
-
-Documents the choices made during the data querying process for my master thesis.
+todo Document the choices made during the data querying process for my master thesis.
 
 
 
@@ -96,7 +91,7 @@ cats
 
 ### Co-Hashtag Selection Criteria (Step 5)
 
-k = 50 
+k = 20
 
 Criteria for filtering out co-hashtags (idea: use the same ones for step 1?):
 - hashtag must be in English
@@ -105,7 +100,7 @@ Criteria for filtering out co-hashtags (idea: use the same ones for step 1?):
 - hashtag must represent the issue from the political perspective (e.g., #canada or #nature strongly correlate with #climatecrisis, but can also represent discussion around the issue form a non-political angle, so it is ommited)
 
 
-### Related Keywords
+### Related Keywords Rule / Classifier
 
 
 

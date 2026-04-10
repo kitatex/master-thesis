@@ -5,6 +5,9 @@ from typing import List, Dict, Any
 from data_processing.config.logging import logger
 from data_processing.config.paths import TOPICS_PATH
 
+"""
+Deduplicates any posts in a .jsonl file.
+"""
 
 TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
 
