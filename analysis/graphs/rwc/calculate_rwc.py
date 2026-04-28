@@ -1,93 +1,110 @@
-import random
 import igraph as ig
 
-from data_processing.config.paths import TOPICS_PATH
-
+from config.paths import TOPICS_PATH
 
 TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
 
+PATH_PARTITIONED_GRAPH = (
+    TOPICS_PATH / f"{TOPIC_NAME}/graph/network_partitioned_k2.graphml"
+)
 
-PATH_PARTITIONED_GRAPH = TOPICS_PATH / f"{TOPIC_NAME}/graph/network_partitioned.graphml"
 
+def calculate_rwc_rwr(
+    g: ig.Graph, side_X: list, side_Y: list, sample_percent: float = 0.05
+):
+    """
+    Calculates the Random Walk Controversy (RWC) score using the Efficient
+    Random Walk with Restart (RWR) variant as defined by Garimella et al. (2018).
+    """
 
-def calculate_rwc(g: ig.Graph, side_0: list, side_1: list, sample_percent: float = 0.1):
-    # Sample nodes to act as the "user nodes" (the nodes we check if we land on)
-    k_0 = int(len(side_0) * sample_percent)
-    k_1 = int(len(side_1) * sample_percent)
+    # Create a copy of the graph because we must modify its structure for the RWR
+    g_mod = g.copy()
+    V_count = g_mod.vcount()
 
-    # Fast lookup sets
-    target_nodes_0 = set(random.sample(side_0, k_0))
-    target_nodes_1 = set(random.sample(side_1, k_1))
+    # 1. IDENTIFY AUTHORITATIVE TARGETS (Highest In-Degree)
+    # Using in-degree as a proxy for endorsements/authoritativeness
+    degrees_X = g_mod.degree(side_X, mode="in")
+    degrees_Y = g_mod.degree(side_Y, mode="in")
 
-    def simulate_walk(start_node, target_set_same, target_set_other):
-        # We start the walk and look for the FIRST target node we hit
-        current_node = start_node
-        steps = 0
-        max_steps = g.ecount() * 2  # Prevent infinite loops in disconnected components
+    k_X = max(1, int(len(side_X) * sample_percent))
+    k_Y = max(1, int(len(side_Y) * sample_percent))
 
-        while steps < max_steps:
-            neighbors = g.neighbors(current_node)
-            if not neighbors:
-                return None  # Dead end
+    # Extract the top k nodes (X+ and Y+ in the paper's notation)
+    top_X = [
+        v
+        for v, d in sorted(zip(side_X, degrees_X), key=lambda x: x[1], reverse=True)[
+            :k_X
+        ]
+    ]
+    top_Y = [
+        v
+        for v, d in sorted(zip(side_Y, degrees_Y), key=lambda x: x[1], reverse=True)[
+            :k_Y
+        ]
+    ]
+    top_all = set(top_X + top_Y)
 
-            # Step to a random neighbor
-            current_node = random.choice(neighbors)
-            steps += 1
+    # 2. MODIFY THE GRAPH: FORCE RESTARTS
+    # Transform high-degree vertices into dangling vertices by removing outgoing edges
+    edges_to_delete = []
+    for v in top_all:
+        edges_to_delete.extend(g_mod.incident(v, mode="out"))
+    g_mod.delete_edges(edges_to_delete)
 
-            # Check if we hit a target (excluding the start node itself)
-            if current_node in target_set_same and current_node != start_node:
-                return "same"
-            if current_node in target_set_other:
-                return "other"
+    # 3. SET RESTART DISTRIBUTIONS (Walk Origins)
+    # P1 starts uniformly over X; P2 starts uniformly over Y
+    reset_X = [0.0] * V_count
+    reset_Y = [0.0] * V_count
 
-        return None
+    for v in side_X:
+        reset_X[v] = 1.0 / len(side_X)
+    for v in side_Y:
+        reset_Y[v] = 1.0 / len(side_Y)
 
-    # Track outcomes: [Started in 0 -> Ended in 0, Started in 0 -> Ended in 1]
-    results_0 = {"same": 0, "other": 0}
-    for node in target_nodes_0:
-        res = simulate_walk(node, target_nodes_0, target_nodes_1)
-        if res:
-            results_0[res] += 1
+    # 4. COMPUTE STATIONARY DISTRIBUTIONS (Personalized PageRank)
+    P1 = g_mod.personalized_pagerank(directed=True, reset=reset_X)
+    P2 = g_mod.personalized_pagerank(directed=True, reset=reset_Y)
 
-    results_1 = {"same": 0, "other": 0}
-    for node in target_nodes_1:
-        res = simulate_walk(node, target_nodes_1, target_nodes_0)
-        if res:
-            results_1[res] += 1
+    # 5. SUM PROBABILITIES OVER TARGET SETS
+    S1_X_plus = sum(P1[v] for v in top_X)
+    S2_X_plus = sum(P2[v] for v in top_X)
 
-    # Calculate Probabilities
-    # P_XX = Probability of starting in X and ending in X
-    P_00 = results_0["same"] / sum(results_0.values()) if sum(results_0.values()) else 0
-    P_01 = (
-        results_0["other"] / sum(results_0.values()) if sum(results_0.values()) else 0
-    )
+    S1_Y_plus = sum(P1[v] for v in top_Y)
+    S2_Y_plus = sum(P2[v] for v in top_Y)
 
-    P_11 = results_1["same"] / sum(results_1.values()) if sum(results_1.values()) else 0
-    P_10 = (
-        results_1["other"] / sum(results_1.values()) if sum(results_1.values()) else 0
-    )
+    # 6. CALCULATE CONDITIONAL PROBABILITIES (Bayes' logic fixed)
+    W_X = len(side_X) / V_count
+    W_Y = len(side_Y) / V_count
 
-    # RWC Score = P(0->0) * P(1->1) - P(0->1) * P(1->0)
-    rwc_score = (P_00 * P_11) - (P_01 * P_10)
+    denom_X_plus = (W_X * S1_X_plus) + (W_Y * S2_X_plus)
+    denom_Y_plus = (W_X * S1_Y_plus) + (W_Y * S2_Y_plus)
 
-    return rwc_score, P_00, P_11
+    # P_AB = Pr[start = A | end = B+]
+    P_XX_plus = (W_X * S1_X_plus) / denom_X_plus if denom_X_plus > 0 else 0
+    P_YX_plus = (W_Y * S2_X_plus) / denom_X_plus if denom_X_plus > 0 else 0
+
+    P_YY_plus = (W_Y * S2_Y_plus) / denom_Y_plus if denom_Y_plus > 0 else 0
+    P_XY_plus = (W_X * S1_Y_plus) / denom_Y_plus if denom_Y_plus > 0 else 0
+
+    # 7. FINAL RWC SCORE
+    rwc_score = (P_XX_plus * P_YY_plus) - (P_XY_plus * P_YX_plus)
+
+    return rwc_score, P_XX_plus, P_YY_plus
 
 
 if __name__ == "__main__":
     print(f"Loading graph from {PATH_PARTITIONED_GRAPH}...")
     g = ig.Graph.Read_GraphML(str(PATH_PARTITIONED_GRAPH))
 
-    # Extract the two sides based on the saved 'side' attribute
-    # Note: GraphML sometimes saves numeric attributes as floats/strings, so cast to int just in case
-    side_0 = [v.index for v in g.vs if int(v["side"]) == 0]
-    side_1 = [v.index for v in g.vs if int(v["side"]) == 1]
+    side_X = [v.index for v in g.vs if int(v["side"]) == 0]
+    side_Y = [v.index for v in g.vs if int(v["side"]) == 1]
 
-    print(f"Side 0 size: {len(side_0)}")
-    print(f"Side 1 size: {len(side_1)}")
+    print(f"Side X size: {len(side_X)}")
+    print(f"Side Y size: {len(side_Y)}")
 
-    print("Calculating RWC Score...")
-    rwc, p00, p11 = calculate_rwc(g, side_0, side_1, sample_percent=0.1)
+    print(f"Calculating RWR Controversy Score for {TOPIC_NAME}...")
+    rwc, pXX, pYY = calculate_rwc_rwr(g, side_X, side_Y, sample_percent=0.05)
 
-    print(f"P(0->0): {p00:.4f}")
-    print(f"P(1->1): {p11:.4f}")
+    print(f"P(Start X | End X+): {pXX:.4f}")
+    print(f"P(Start Y | End Y+): {pYY:.4f}")
     print(f"Final Controversy Score (RWC): {rwc:.4f}")

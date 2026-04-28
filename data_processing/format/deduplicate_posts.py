@@ -2,18 +2,21 @@ import orjson
 from pathlib import Path
 from typing import List, Dict, Any
 
-from data_processing.config.logging import logger
-from data_processing.config.paths import TOPICS_PATH
+from config.logging import logger
+from config.paths import TOPICS_PATH
 
 """
 Deduplicates any posts in a .jsonl file.
 """
 
-TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
+TOPIC_NAME = "#gaza"  # e.g., #climatecrisis
 
-INPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts.jsonl"
+DATA_LEVEL = "seed_hashtag"  # seed_hashtag or hashtag_corpus
 
-OUTPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts_deduplicated.jsonl"
+
+INPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/{DATA_LEVEL}/posts.jsonl"
+
+OUTPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/{DATA_LEVEL}/posts_deduplicated.jsonl"
 
 
 def deduplicate_posts_by_id(

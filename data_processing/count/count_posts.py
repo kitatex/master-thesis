@@ -4,9 +4,9 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from builtins import enumerate
 
-from data_processing.config.constants import MAX_WORKERS
-from data_processing.config.paths import PATH_USER_POSTS, GENERAL_PATH
-from data_processing.config.logging import logger
+from config.constants import MAX_WORKERS
+from config.paths import PATH_USER_POSTS, GENERAL_PATH
+from config.logging import logger
 
 """
 Script for counting the total number of posts in the Bluesky dataset.

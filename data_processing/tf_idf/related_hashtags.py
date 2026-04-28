@@ -4,13 +4,13 @@ import math
 from collections import defaultdict
 
 from data_processing.util.functions import find_hashtags
-from data_processing.config.logging import logger
-from data_processing.config.constants import TOTAL_POSTS_NUMBER
-from data_processing.config.paths import HASHTAG_COUNTS_PATH, TOPICS_PATH
+from config.logging import logger
+from config.constants import TOTAL_POSTS_NUMBER
+from config.paths import HT_COUNTS_PATH, TOPICS_PATH
 
 """
 After obtaining a corpus for a seed hashtag, this script can be used to related
-co-hashtags. The HASHTAG_COUNTS_PATH file is used to normalize using tf-idf.
+co-hashtags. The HT_COUNTS_PATH file is used to normalize using tf-idf.
 
 INPUT_PATH (.jsonl): Path to the seed hashtag corpus.
 
@@ -18,7 +18,7 @@ OUTPUT_PATH (.jsonl): Path where the ranked hashtag list will be saved.
 """
 
 
-TOPIC_NAME = "#dadjokes"  # e.g., #climatecrisis
+TOPIC_NAME = "#gaza"  # e.g., #climatecrisis
 
 INPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/seed_hashtag/posts_deduplicated.jsonl"
 
@@ -80,7 +80,7 @@ def obtain_closest_hashtags(tf_counts: dict, ht_counts_path: Path):
 def main():
     tf_results = compute_tf(INPUT_PATH)
     if tf_results:
-        closest_hashtags = obtain_closest_hashtags(tf_results, HASHTAG_COUNTS_PATH)
+        closest_hashtags = obtain_closest_hashtags(tf_results, HT_COUNTS_PATH)
 
     if closest_hashtags:
         try:

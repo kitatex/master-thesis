@@ -8,9 +8,9 @@ from data_processing.util.functions import (
     get_post_hashtags,
     extract_hashtags_from_jsonl,
 )
-from data_processing.config.paths import PATH_USER_POSTS, TOPICS_PATH
-from data_processing.config.constants import MAX_WORKERS, VERBOSE
-from data_processing.config.logging import logger
+from config.paths import PATH_USER_POSTS, TOPICS_PATH
+from config.constants import MAX_WORKERS, VERBOSE
+from config.logging import logger
 
 """
 Copy the posts which contain specified keywords (typically, hashtags).
@@ -31,11 +31,11 @@ KEYWORDS = [
 ]
 
 
-path = TOPICS_PATH / "_multiple/20260405/keywords.jsonl"
+path = TOPICS_PATH / "_multiple/20260417/keywords.jsonl"
 KEYWORDS = extract_hashtags_from_jsonl(path)
 
 
-OUTPUT_FILE = TOPICS_PATH / "_multiple/20260405/posts.jsonl"
+OUTPUT_FILE = TOPICS_PATH / "_multiple/20260417/posts.jsonl"
 
 
 def find_posts_with_keyword(file_path: Path):

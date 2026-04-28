@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-from data_processing.config.constants import USE_TEST_DATA
+from config.constants import USE_TEST_DATA
 
 load_dotenv()
 
@@ -29,6 +29,7 @@ HT_CORPORA_PATH = Path(require_env("HT_CORPORA_PATH"))
 
 HT_COUNTS_PATH = Path(require_env("HT_COUNTS_PATH"))
 BACKGROUND_CORPUS_PATH = Path(require_env("BACKGROUND_CORPUS_PATH"))
+MBFC_CSV_PATH = Path(require_env("MBFC_CSV_PATH"))
 
 # Derive more paths
 DATA_DIR = DATA_TEST_PATH if USE_TEST_DATA else DATA_BASE_PATH

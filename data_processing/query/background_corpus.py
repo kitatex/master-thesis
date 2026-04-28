@@ -3,8 +3,8 @@ import random
 from pathlib import Path
 from typing import List
 
-from data_processing.config.paths import PATH_USER_POSTS
-from data_processing.config.logging import logger
+from config.paths import PATH_USER_POSTS
+from config.logging import logger
 
 """
 Create a background corpus of English posts that contain no hashtags. The background

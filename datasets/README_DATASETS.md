@@ -19,13 +19,12 @@ Process for obtaining data for a *discussion topic* (e.g., climate change, footb
 
 - **Step 4**: Create a ranked list of the closest hashtags to the seed hashtags using [``related_hashtags.py``](../data_processing/tf_idf/related_hashtags.py). The closest hashtags are ranked using tf-idf scores, so that hashtags which are generally unpopular but co-occur highly with the seed hashtag get a higher score (and vice-versa).
 
-- **Step 5**: Filter the list from Step 4 by selecting the top $k$ hashtags that are related to the seed hashtag according to some previously defined criteria. Work directly in a respective copy of the ranked tf-idf .jsonl (e.g., ``closest_hashtags.jsonl``). 
+- **Step 5**: Filter the list from Step 4 by selecting the top $k$ hashtags that are related to the seed hashtag according to some previously defined criteria. Work directly in a respective copy of the ranked tf-idf .jsonl (e.g., ``chosen_closest_hashtags.jsonl``). 
 For this project, $k=20$ was chosen since Garimella et al. (2018) did so similarly.
 
 - **Step 6**: Use [``copy_keyword_posts.py``](../data_processing/query/copy_keyword_posts.py) to obtain an initial corpus of posts which contain the co-hashtags selected from Step 5.
 
-- **Step 7**: Join the posts from the seed hashtags and co-hastags. Then, deduplicate to obtain the **hashtag corpus**.
-
+- **Step 7**: Join the posts from the seed hashtags and co-hashtags using [``merge.py``](../data_processing/format/merge.py) (includes deduplication) to obtain the hashtag_corpus.
 
 todo: describe a rule for including posts which do not use hashtags. Maybe with a fast classifier
 

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from data_processing.config.paths import TOPICS_PATH, HT_CORPORA_PATH
+from config.paths import TOPICS_PATH
 from analysis.graphs.build._parser import extract_interactions
 from analysis.graphs.build._constructor import create_weighted_df, df_to_igraph
 from analysis.graphs.build._processor import prune_graph
@@ -11,11 +11,14 @@ Executes the full graph building pipeline and exports both Parquet and GraphML.
 
 INPUT_DATA (.jsonl): The data from which the graph is built.
 OUTPUT_DIR: Directory where the graphs are saved.
+K_THRESHOLD: Minimum number of retweets.
 """
 
-TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
+TOPIC_NAME = "#dadjokes"  # e.g., #climatecrisis
 
-INPUT_DATA = HT_CORPORA_PATH / f"{TOPIC_NAME}.jsonl"
+INPUT_DATA = (
+    TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts_merged_deduplicated.jsonl"
+)
 
 OUTPUT_DIR = TOPICS_PATH / f"{TOPIC_NAME}/graph"
 
@@ -49,13 +52,11 @@ def run_pipeline(
     print(f"GraphML saved to: {graphml_out}")
 
     print("Running Spectral Bisection (k=2)...")
-    # Calculate communities
     communities = g_final.community_leading_eigenvector(clusters=2)
     # Assign the resulting sides (0 or 1) as a vertex attribute
     g_final.vs["side"] = communities.membership
 
-    # Export to GraphML (this will automatically include the 'side' attribute)
-    graphml_out = output_dir / "network_partitioned.graphml"
+    graphml_out = output_dir / f"network_partitioned_k{K_THRESHOLD}.graphml"
     g_final.write_graphml(str(graphml_out))
     print(f"Partitioned GraphML saved to: {graphml_out}")
 

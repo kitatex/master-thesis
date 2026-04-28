@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from data_processing.config.logging import logger
+from config.logging import logger
 
 """
 Trim the ranked hashtag list to a certain threshold.

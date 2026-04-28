@@ -4,9 +4,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 import time
 
-from data_processing.config.constants import MAX_WORKERS
-from data_processing.config.paths import PATH_USER_POSTS, GENERAL_PATH
-from data_processing.config.logging import logger
+from config.constants import MAX_WORKERS
+from config.paths import PATH_USER_POSTS, GENERAL_PATH
+from config.logging import logger
 from data_processing.util.functions import get_post_hashtags, iter_jsonl
 
 

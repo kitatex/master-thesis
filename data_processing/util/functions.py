@@ -1,9 +1,9 @@
 import orjson
 from pathlib import Path
 from typing import Generator
-from data_processing.config.logging import logger
+from config.logging import logger
 
-from data_processing.config.constants import HASHTAG_REGEX
+from config.constants import HASHTAG_REGEX
 
 
 def find_hashtags(text: str) -> list[str]:

@@ -4,8 +4,8 @@ from data_processing.util.functions import (
     get_post_hashtags,
     extract_hashtags_from_jsonl,
 )
-from data_processing.config.logging import logger
-from data_processing.config.paths import TOPICS_PATH
+from config.logging import logger
+from config.paths import TOPICS_PATH
 
 """
 This script is used to make subsequent queries for keywords (hashtags) from a single
@@ -16,14 +16,14 @@ TARGET_HASHTAGS (List)
 OUTPUT_FILE (.jsonl)
 """
 
-INPUT_SUBSET = TOPICS_PATH / "_multiple/20260405/posts.jsonl"
+INPUT_SUBSET = TOPICS_PATH / "_multiple/20260417/posts.jsonl"
 
-# TARGET_HASHTAGS = ["#ukraine"]
+TOPIC = "#dadjokes"
 
-path = TOPICS_PATH / "#aiethics/co_hashtags/chosen_closest_hashtags.jsonl"
+path = TOPICS_PATH / f"{TOPIC}/co_hashtags/chosen_closest_hashtags.jsonl"
 TARGET_HASHTAGS = extract_hashtags_from_jsonl(path)
 
-OUTPUT_FILE = TOPICS_PATH / "#aiethics/co_hashtags/posts_co_hashtags.jsonl"
+OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/co_hashtags/posts_co_hashtags.jsonl"
 
 
 def filter_subset():

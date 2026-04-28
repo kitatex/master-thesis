@@ -5,8 +5,8 @@ from pathlib import Path
 from typing import List, Optional
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from data_processing.config.paths import BACKGROUND_CORPUS_PATH, TOPICS_PATH
-from data_processing.config.logging import logger
+from config.paths import BACKGROUND_CORPUS_PATH, TOPICS_PATH
+from config.logging import logger
 
 """
 Based on a hashtag corpus file (seed + co-hashtags), obtain the top n related keywords
