@@ -1,17 +1,17 @@
 import igraph as ig
 
 
-def prune_graph(g: ig.Graph, k_val: int = 2) -> ig.Graph:
+def prune_graph(g: ig.Graph, largest_comp: bool, k_val: int = 2) -> ig.Graph:
     """
-    Removes low-degree noise using k-core and extracts the giant connected component.
+    Removes low-degree noise using k-core and optionally extracts the giant connected component.
     """
     # 1. Directly get the k-core subgraph
-    # This replaces the manual 'induced_subgraph' call that was failing
     g_pruned = g.k_core(k_val)
 
-    # 2. Extract the Weakly Connected Giant Component
-    # This ensures we focus on the primary discourse cluster
-    components = g_pruned.components(mode="weak")  # type: ignore
-    g_giant = components.giant()
+    # 2. Conditionally extract the Weakly Connected Giant Component
+    if largest_comp:
+        components = g_pruned.components(mode="weak")  # type: ignore
+        return components.giant()
 
-    return g_giant
+    # 3. If largest_comp is False, just return the k-core pruned graph
+    return g_pruned  # type: ignore

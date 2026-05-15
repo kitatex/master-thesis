@@ -18,7 +18,7 @@ OUTPUT_PATH (.jsonl): Path where the ranked hashtag list will be saved.
 """
 
 
-TOPIC_NAME = "#gaza"  # e.g., #climatecrisis
+TOPIC_NAME = "#climatechange"  # e.g., #climatechange
 
 INPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/seed_hashtag/posts_deduplicated.jsonl"
 

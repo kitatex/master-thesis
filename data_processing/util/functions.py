@@ -54,6 +54,51 @@ def extract_hashtags_from_jsonl(file_path: str | Path) -> list[str]:
         return []
 
 
+def extract_keys_from_jsonl(file_path: str | Path) -> list[str]:
+    """
+    Args:
+        file_path: Path to the .jsonl (or .json) file.
+
+    Returns:
+        A list of keys found in the file.
+    """
+
+    file_path = Path(file_path)
+
+    try:
+        with open(file_path, "rb") as f:
+            content = f.read()
+
+        data = orjson.loads(content)
+
+        # Case 1: single JSON object / dict
+        if isinstance(data, dict):
+            keys = list(data.keys())
+
+        # Case 2: list of JSON objects
+        elif isinstance(data, list):
+            keys = []
+            for obj in data:
+                if isinstance(obj, dict):
+                    keys.extend(obj.keys())
+
+        else:
+            raise ValueError("Unsupported JSON structure")
+
+        print(f"Returning list of {len(keys)} keys")
+        print(f"Preview of list beginning: {keys[:5]}")
+
+        return keys
+
+    except FileNotFoundError:
+        print(f"Error: The file at path '{file_path}' was not found.")
+        return []
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []
+
+
 def _is_english(post_data: dict) -> bool:
     """
     Standardized check for strictly English posts.

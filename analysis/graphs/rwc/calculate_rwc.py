@@ -1,11 +1,16 @@
 import igraph as ig
 
-from config.paths import TOPICS_PATH
+from config.paths import TOPICS_PATH, RWC_PATH
 
 TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
 
 PATH_PARTITIONED_GRAPH = (
     TOPICS_PATH / f"{TOPIC_NAME}/graph/network_partitioned_k2.graphml"
+)
+
+PATH_PARTITIONED_GRAPH = (
+    RWC_PATH
+    / "graphs_graphml/retweet_graph_sxsw_threshold_largest_CC_partitioned_k2.graphml"
 )
 
 
@@ -102,7 +107,7 @@ if __name__ == "__main__":
     print(f"Side X size: {len(side_X)}")
     print(f"Side Y size: {len(side_Y)}")
 
-    print(f"Calculating RWR Controversy Score for {TOPIC_NAME}...")
+    print(f"Calculating RWR Controversy Score for {PATH_PARTITIONED_GRAPH}...")
     rwc, pXX, pYY = calculate_rwc_rwr(g, side_X, side_Y, sample_percent=0.05)
 
     print(f"P(Start X | End X+): {pXX:.4f}")

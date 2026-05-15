@@ -14,15 +14,14 @@ OUTPUT_DIR: Directory where the graphs are saved.
 K_THRESHOLD: Minimum number of retweets.
 """
 
-TOPIC_NAME = "#dadjokes"  # e.g., #climatecrisis
+TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
 
-INPUT_DATA = (
-    TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts_merged_deduplicated.jsonl"
-)
+INPUT_DATA = TOPICS_PATH / f"{TOPIC_NAME}/full/posts_merged_deduplicated.jsonl"
 
 OUTPUT_DIR = TOPICS_PATH / f"{TOPIC_NAME}/graph"
 
 K_THRESHOLD = 2
+LARGEST_COMPONENT = True
 
 
 def run_pipeline(
@@ -43,11 +42,16 @@ def run_pipeline(
 
     # Build & Prune Graph Object
     g = df_to_igraph(weighted_df)
-    g_final = prune_graph(g, k_val=k_threshold)
-    print(f"Graph pruned to {g_final.vcount()} nodes and {g_final.ecount()} edges.")
+    if LARGEST_COMPONENT:
+        g_final = prune_graph(g, LARGEST_COMPONENT, k_val=k_threshold)
+        print(f"Graph pruned to {g_final.vcount()} nodes and {g_final.ecount()} edges.")
+    else:
+        g_final = g
+        print("No graph pruning")
 
     # Export to GraphML
-    graphml_out = output_dir / "network.graphml"
+    large_comp_string = "large_comp" if LARGEST_COMPONENT else "all_comp"
+    graphml_out = output_dir / f"network_k{K_THRESHOLD}_{large_comp_string}.graphml"
     g_final.write_graphml(str(graphml_out))
     print(f"GraphML saved to: {graphml_out}")
 

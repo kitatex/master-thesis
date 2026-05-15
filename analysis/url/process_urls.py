@@ -6,7 +6,7 @@ import os
 
 from config.paths import TOPICS_PATH, MBFC_CSV_PATH
 
-TOPIC_NAME = "#gamedev"  # e.g., #climatecrisis
+TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
 
 INPUT_DATA = (
     TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts_merged_deduplicated.jsonl"
@@ -50,17 +50,24 @@ def extract_domains(text):
 
 
 def process_data(jsonl_path, mbfc_csv_path, output_csv_path):
-    # Load MBFC dataset
-    print("Loading MBFC Dataset...")
+    # Load enriched MBFC dataset
+    print("Loading Enriched MBFC Dataset...")
     mbfc_df = pd.read_csv(mbfc_csv_path)
 
     # Map categorical bias to numerical scores
     mbfc_df["bias_score"] = mbfc_df["bias"].map(BIAS_MAP)
 
-    # Create a fast lookup dictionary
-    mbfc_lookup = mbfc_df.set_index("source")[
-        ["bias_score", "factual_reporting"]
-    ].to_dict("index")
+    # Create an expanded lookup dictionary including new attributes
+    meta_columns = [
+        "bias_score",
+        "factual_reporting",
+        "country",
+        "media_type",
+        "popularity",
+        "mbfc_credibility_rating",
+    ]
+
+    mbfc_lookup = mbfc_df.set_index("source")[meta_columns].to_dict("index")
 
     # Parse JSONL Data
     print("Parsing Bluesky Posts...")
@@ -72,53 +79,58 @@ def process_data(jsonl_path, mbfc_csv_path, output_csv_path):
         for line in f:
             post = json.loads(line.strip())
             text = post.get("text", "")
-
-            # Extract domains from the post text
             domains = extract_domains(text)
 
             for domain in domains:
                 total_urls_found += 1
-
-                # Check if the domain is in our MBFC lookup table
                 if domain in mbfc_lookup:
                     matched_urls += 1
-                    bias_score = mbfc_lookup[domain]["bias_score"]
-                    factual = mbfc_lookup[domain]["factual_reporting"]
-                else:
-                    bias_score = None
-                    factual = None
+                    entry = mbfc_lookup[domain]
 
-                # Store the flattened record
-                records.append(
-                    {
-                        "post_id": post.get("post_id"),
-                        "user_id": post.get("user_id"),
-                        "domain": domain,
-                        "bias_score": bias_score,
-                        "factual_reporting": factual,
-                    }
-                )
+                    # Store the flattened record with all new attributes
+                    records.append(
+                        {
+                            "post_id": post.get("post_id"),
+                            "user_id": post.get("user_id"),
+                            "domain": domain,
+                            "bias_score": entry["bias_score"],
+                            "factual_reporting": entry["factual_reporting"],
+                            "country": entry["country"],
+                            "media_type": entry["media_type"],
+                            "popularity": entry["popularity"],
+                            "credibility": entry["mbfc_credibility_rating"],
+                        }
+                    )
+                else:
+                    records.append(
+                        {
+                            "post_id": post.get("post_id"),
+                            "user_id": post.get("user_id"),
+                            "domain": domain,
+                            "bias_score": None,
+                            "factual_reporting": None,
+                            "country": None,
+                            "media_type": None,
+                            "popularity": None,
+                            "credibility": None,
+                        }
+                    )
 
     results_df = pd.DataFrame(records)
-
-    # Safely create directories if they don't exist ---
     output_dir = os.path.dirname(output_csv_path)
-    if output_dir:  # Checks if a directory path was actually provided
+    if output_dir:
         os.makedirs(output_dir, exist_ok=True)
 
-    # Save the processed data
     results_df.to_csv(output_csv_path, index=False)
 
-    # Print Summary Statistics
     print("\n" + "=" * 30)
-    print("📋 SUMMARY STATISTICS")
+    print("SUMMARY STATISTICS")
     print("=" * 30)
     print(f"Total Posts Processed: {results_df['post_id'].nunique()}")
     print(f"Total URLs Extracted: {total_urls_found}")
-    print(f"URLs Matched with MBFC: {matched_urls}")
+    print(f"Matched with Enriched MBFC: {matched_urls}")
     if total_urls_found > 0:
-        match_rate = (matched_urls / total_urls_found) * 100
-        print(f"Match Rate: {match_rate:.2f}%")
+        print(f"Match Rate: {(matched_urls / total_urls_found) * 100:.2f}%")
     print("=" * 30 + "\n")
 
 

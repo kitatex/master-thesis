@@ -25,6 +25,7 @@ USER_POSTS_DIR = Path(require_env("USER_POSTS"))
 GENERAL_PATH = Path(require_env("GENERAL_PATH"))
 TOPICS_PATH = Path(require_env("TOPICS_PATH"))
 HT_CORPORA_PATH = Path(require_env("HT_CORPORA_PATH"))
+RWC_PATH = Path(require_env("RWC_PATH"))
 
 
 HT_COUNTS_PATH = Path(require_env("HT_COUNTS_PATH"))
