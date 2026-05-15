@@ -2,12 +2,14 @@ import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import random
 import os
 
 from config.paths import TOPICS_PATH
 
 TOPIC_NAME = "#aiethics"
 
+# --- PATHS ---
 GLOBAL_OPINIONS_CSV = TOPICS_PATH / f"{TOPIC_NAME}/eda/global_user_opinions.csv"
 INPUT_GRAPHML = TOPICS_PATH / f"{TOPIC_NAME}/graph/network_k2_large_comp.graphml"
 OUTPUT_GRAPHML = TOPICS_PATH / f"{TOPIC_NAME}/graph/network_with_global_bias.graphml"
@@ -25,7 +27,7 @@ def process_user_bias_network():
     # Convert user_id to string for safe dictionary matching
     df["user_id"] = df["user_id"].astype(str).str.strip()
 
-    # Create the lookup dictionary directly (no groupby needed anymore!)
+    # Create the lookup dictionary directly
     bias_dict = df.set_index("user_id")["estimated_opinion"].to_dict()
 
     print(f"Loaded global opinion scores for {len(bias_dict)} users.")
@@ -100,22 +102,23 @@ def process_user_bias_network():
     )
 
     try:
-        # Use existing coordinates if available, filtering to just the mapped nodes
+        # Use existing coordinates if available (e.g. from Gephi ForceAtlas2)
         pos = {
             n: (float(G.nodes[n]["x"]), float(G.nodes[n]["y"]))
             for n in G_colored.nodes()
         }
     except KeyError:
-        print("Calculating layout for subgraph...")
+        print("Calculating fast layout for subgraph...")
+        # Using a fast layout so it doesn't freeze if Gephi coords are missing
+        # pos = nx.spring_layout(G_colored, seed=42, iterations=15)
         pos = nx.random_layout(G_colored, seed=42)
-        print("finished")
 
     cmap = plt.get_cmap("coolwarm")
 
     # --- Custom Normalizer to stretch the "Leftist Bubble" contrast ---
     norm = mcolors.Normalize(vmin=-0.75, vmax=0.25, clip=True)
 
-    # THE FIX: Calculate all colors first, preserving node order
+    # --- FAST NODE DRAWING (Vectorized) ---
     nodelist = list(G_colored.nodes())
     node_color_list = []
 
@@ -123,7 +126,6 @@ def process_user_bias_network():
         val = G_colored.nodes[node].get("url_bias_score")
         node_color_list.append(cmap(norm(val)))
 
-    # Draw ALL nodes simultaneously (Instantaneous)
     nx.draw_networkx_nodes(
         G_colored,
         pos,
@@ -133,16 +135,54 @@ def process_user_bias_network():
         ax=ax_graph,
     )
 
-    # Draw ALL edges simultaneously
-    print("Drawing edges...")
-    nx.draw_networkx_edges(G_colored, pos, alpha=0.2, edge_color="grey", ax=ax_graph)
+    # --- FAST EDGE DRAWING (Sampled) ---
+    print("Drawing edges (Sampling to prevent Matplotlib freeze)...")
+    all_edges = list(G_colored.edges())
 
-    # Update title to reflect the filtering
+    # Cap the maximum number of edges rendered to keep performance snappy
+    max_edges_to_draw = 2000
+    if len(all_edges) > max_edges_to_draw:
+        edges_to_draw = random.sample(all_edges, max_edges_to_draw)
+    else:
+        edges_to_draw = all_edges
+
+    nx.draw_networkx_edges(
+        G_colored,
+        pos,
+        edgelist=edges_to_draw,
+        alpha=0.15,  # Slightly increased opacity since there are fewer lines
+        edge_color="grey",
+        ax=ax_graph,
+    )
+
+    # Update title to reflect the filtering and sampling
     ax_graph.set_title(
-        f"{TOPIC_NAME} Global Opinion Network (Only URL-Sharers)\nNodes: {G_colored.number_of_nodes()} | Edges: {G_colored.number_of_edges()}",
+        f"{TOPIC_NAME} Global Opinion Network (Only URL-Sharers)\nNodes: {G_colored.number_of_nodes()} | Edges: {G_colored.number_of_edges()} (Showing {len(edges_to_draw)})",
         fontsize=16,
     )
     ax_graph.axis("off")
+
+    # --- Plot Bottom: Histogram ---
+    ax_hist.hist(
+        user_opinions, bins=40, range=(-1.0, 1.0), edgecolor="black", alpha=0.7
+    )
+
+    patches = ax_hist.patches
+    for patch in patches:
+        x = patch.get_x() + patch.get_width() / 2  # type: ignore
+
+        # Apply the exact same normalizer to the histogram bars
+        patch.set_facecolor(cmap(norm(x)))
+
+    ax_hist.set_title("Global User Opinion Distribution", fontsize=16)
+    ax_hist.set_xlabel("Opinion (-1 to 1)", fontsize=12)
+    ax_hist.set_ylabel("# Users", fontsize=12)
+    ax_hist.set_xlim(-1.1, 1.1)
+    ax_hist.grid(axis="y", linestyle="--", alpha=0.7)
+
+    plt.tight_layout()
+    plt.savefig(OUTPUT_PLOT, dpi=300)
+    print(f"Visualization saved to {OUTPUT_PLOT}")
 
 
 if __name__ == "__main__":
