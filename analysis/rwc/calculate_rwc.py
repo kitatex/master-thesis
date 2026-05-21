@@ -2,16 +2,26 @@ import igraph as ig
 
 from config.paths import TOPICS_PATH, RWC_PATH
 
-TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
 
-PATH_PARTITIONED_GRAPH = (
-    TOPICS_PATH / f"{TOPIC_NAME}/graph/network_partitioned_k2.graphml"
-)
+REPRODUCE_PAPER = False
 
-PATH_PARTITIONED_GRAPH = (
-    RWC_PATH
-    / "graphs_graphml/retweet_graph_sxsw_threshold_largest_CC_partitioned_k2.graphml"
-)
+if REPRODUCE_PAPER:
+    # retweet_graph_beefban_threshold_largest_CC_partitioned_k2.graphml
+    # retweet_graph_russia_march_threshold_largest_CC_partitioned_k2.graphml
+    # retweet_graph_sxsw_threshold_largest_CC_partitioned_k2.graphml
+    # retweet_graph_germanwings_threshold_largest_CC_partitioned_k2.graphml
+
+    FILE = "retweet_graph_germanwings_threshold_largest_CC_partitioned_k2.graphml"
+    PATH_PARTITIONED_GRAPH = RWC_PATH / f"graphs_graphml_selection/{FILE}"
+
+
+else:
+    TOPIC_NAME = "#aiethics"
+    MIN_RP = 3
+
+    PATH_PARTITIONED_GRAPH = (
+        TOPICS_PATH / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_partit_minrp{MIN_RP}.graphml"
+    )
 
 
 def calculate_rwc_rwr(
@@ -67,8 +77,8 @@ def calculate_rwc_rwr(
         reset_Y[v] = 1.0 / len(side_Y)
 
     # 4. COMPUTE STATIONARY DISTRIBUTIONS (Personalized PageRank)
-    P1 = g_mod.personalized_pagerank(directed=True, reset=reset_X)
-    P2 = g_mod.personalized_pagerank(directed=True, reset=reset_Y)
+    P1 = g_mod.personalized_pagerank(directed=False, reset=reset_X, damping=0.99)
+    P2 = g_mod.personalized_pagerank(directed=False, reset=reset_Y, damping=0.99)
 
     # 5. SUM PROBABILITIES OVER TARGET SETS
     S1_X_plus = sum(P1[v] for v in top_X)
@@ -78,8 +88,10 @@ def calculate_rwc_rwr(
     S2_Y_plus = sum(P2[v] for v in top_Y)
 
     # 6. CALCULATE CONDITIONAL PROBABILITIES (Bayes' logic fixed)
-    W_X = len(side_X) / V_count
-    W_Y = len(side_Y) / V_count
+    # The paper explicitly states walks start with equal probability
+    # to prevent size skew (W_X = 0.5, W_Y = 0.5)
+    W_X = 0.5
+    W_Y = 0.5
 
     denom_X_plus = (W_X * S1_X_plus) + (W_Y * S2_X_plus)
     denom_Y_plus = (W_X * S1_Y_plus) + (W_Y * S2_Y_plus)

@@ -9,14 +9,17 @@ from tqdm import tqdm
 from config.paths import TOPICS_PATH, PATH_USER_POSTS, MBFC_CSV_PATH
 
 TOPIC_NAME = "#aiethics"
+MIN_RP = 2  # so the corresponding graph is obtained
+MIN_URL = 3
 
-INPUT_GRAPHML = TOPICS_PATH / f"{TOPIC_NAME}/graph/network_k2_large_comp.graphml"
-OUTPUT_CSV = TOPICS_PATH / f"{TOPIC_NAME}/eda/global_user_opinions.csv"
+INPUT_GRAPHML = (
+    TOPICS_PATH / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_minrp{MIN_RP}_largecomp.graphml"
+)
 
-# Minimum matched MBFC URLs required to calculate a valid score
-MIN_URLS_SHARED = 2
+OUTPUT_CSV = (
+    TOPICS_PATH / f"{TOPIC_NAME}/eda/opinions_minrp{MIN_RP}_minurl{MIN_URL}.csv"
+)
 
-# Bias mapping dictionary
 BIAS_MAP = {
     "left": -1.0,
     "left-center": -0.5,
@@ -114,7 +117,7 @@ def process_global_opinions():
                     continue
 
         # 3. Validation & Aggregation
-        if len(matched_scores) >= MIN_URLS_SHARED:
+        if len(matched_scores) >= MIN_URL:
             avg_score = sum(matched_scores) / len(matched_scores)
             records.append(
                 {
@@ -137,9 +140,7 @@ def process_global_opinions():
     print("=" * 40)
     print(f"Total Network Users Searched: {len(relevant_users)}")
     print(f"Users Missing Local JSONL: {users_with_missing_files}")
-    print(
-        f"Users Meeting Minimum URL Threshold ({MIN_URLS_SHARED}+): {len(results_df)}"
-    )
+    print(f"Users Meeting Minimum URL Threshold ({MIN_URL}+): {len(results_df)}")
     print(f"Saved Database to: {OUTPUT_CSV}")
     print("=" * 40 + "\n")
 

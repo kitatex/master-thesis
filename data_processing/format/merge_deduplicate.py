@@ -10,7 +10,9 @@ from config.paths import TOPICS_PATH
 
 TOPIC_NAME = "#climatechange"
 
-HASHTAG_ONLY = True
+# True, if merging seed and co-hashtags
+# False, if merging hashtag corpus and keyword posts
+HASHTAG_ONLY = False
 
 
 if HASHTAG_ONLY:

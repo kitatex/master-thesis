@@ -15,7 +15,8 @@ This version strips all #hashtags from the text and ensures all output keys
 are lowercased for easier downstream matching.
 """
 
-TOPIC_NAME = "#climatechange"  # identified by seed hashtag; e.g., #gaza
+TOPIC_NAME = "#dadjokes"  # identified by seed hashtag; e.g., #gaza
+
 
 HASHTAG_CORPUS = (
     TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts_merged_deduplicated.jsonl"

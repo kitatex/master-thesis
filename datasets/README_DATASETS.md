@@ -22,21 +22,19 @@ Process for obtaining data for a *discussion topic* (e.g., climate change, footb
 - **Step 5**: Filter the list from Step 4 by selecting the top $k$ hashtags that are related to the seed hashtag according to some previously defined criteria. Work directly in a respective copy of the ranked tf-idf .jsonl (e.g., ``chosen_closest_hashtags.jsonl``). 
 For this project, $k=20$ was chosen since Garimella et al. (2018) did so similarly.
 
-- **Step 6**: Use [``copy_keyword_posts.py``](../data_processing/query/copy_keyword_posts.py) to obtain an initial corpus of posts which contain the co-hashtags selected from Step 5.
+- **Step 6**: Use [``copy_keyword_posts.py``](../data_processing/query/copy_keyword_posts.py) to obtain an initial corpus of posts which contain the co-hashtags selected hashtagg from Step 5.
 
-- **Step 7**: Join the posts from the seed hashtags and co-hashtags using [``merge.py``](../data_processing/format/merge.py) (includes deduplication) to obtain the hashtag_corpus.
+- **Step 7**: Join the posts from the seed hashtags and co-hashtags using [``merge_deduplicate.py``](../data_processing/format/merge_deduplicate.py) to obtain the hashtag_corpus.
 
-todo: describe a rule for including posts which do not use hashtags. Maybe with a fast classifier
+- **Step 8**: Based on the hashtag_corpus, obtain relevant keywords to capture posts which do not use hashtags. Get single keywords using [``related_keywords.py``](../data_processing/tf_idf/related_keywords.py) and bigrams using [``related_bigrams.py``](../data_processing/tf_idf/related_bigrams.py).
 
-- **Step 8**: obtain keywords that represent seed hashtag and co-hashtags (important to also capture posts that don't use hashtags)
+todo actually one should first do only keywords, then bigrams because the latter depends on the former. Also, mention "chosen_keywords" bzw bigram files
 
-- **Step 9**: query posts that contain keywords (define a logic. e.g., have to contain at least keywords?? or statistical technique)
+- **Step 9**: Filter the single keywords and bigrams list to include only terms which identify the target topic, similar to Step 5. Merge them into a single list called ``chosen_keywords_bigrams.jsonl``.
 
+- **Step 10**: Use [``copy_keyword_posts.py``](../data_processing/query/copy_keyword_posts.py) to obtain the posts which contain the selected keywords (single and bigrams) from Step 9.
 
-
-
-# Documentation Data Querying Thesis
-todo Document the choices made during the data querying process for my master thesis.
+- **Step 11**: Join the posts from the hashtag_corpus and keyword posts using [``merge_deduplicate.py``](../data_processing/format/merge_deduplicate.py) to obtain the full dataset of posts for a topic.
 
 
 

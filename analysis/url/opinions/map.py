@@ -7,13 +7,44 @@ import os
 
 from config.paths import TOPICS_PATH
 
-TOPIC_NAME = "#aiethics"
+"""
+Takes two inputs:
+1) A opinion .csv file
+2) A network .graphml file. 
 
-# --- PATHS ---
-GLOBAL_OPINIONS_CSV = TOPICS_PATH / f"{TOPIC_NAME}/eda/global_user_opinions.csv"
-INPUT_GRAPHML = TOPICS_PATH / f"{TOPIC_NAME}/graph/network_k2_large_comp.graphml"
-OUTPUT_GRAPHML = TOPICS_PATH / f"{TOPIC_NAME}/graph/network_with_global_bias.graphml"
-OUTPUT_PLOT = TOPICS_PATH / f"{TOPIC_NAME}/eda/global_user_bias_distribution.png"
+Creates two outputs:
+1) A .graphml file with global opinion estimates for each user with at least
+MIN_URL. The estimate is the average of shared URL opinion scores.
+2) A visualization (histogram) of the opinion distribution for the above graph. 
+"""
+
+TOPIC_NAME = "#climatechange"
+
+# The corresponding graph for MIN_RP has to exist (see interaction_graph.py)
+MIN_RP = 3
+MIN_URL = 2
+
+# --- Input ---
+GLOBAL_OPINIONS_CSV = (
+    TOPICS_PATH / f"{TOPIC_NAME}/eda/opinions_minrp{MIN_RP}_minurl{MIN_URL}.csv"
+)
+
+# One can always use a csv where MIN_RP and MIN_URL are equal or lower (more data)
+# GLOBAL_OPINIONS_CSV = TOPICS_PATH / f"{TOPIC_NAME}/eda/opinions_minrpx_minurlx.csv"
+
+INPUT_GRAPHML = (
+    TOPICS_PATH / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_minrp{MIN_RP}_largecomp.graphml"
+)
+
+# --- Output ---
+OUTPUT_GRAPHML = (
+    TOPICS_PATH
+    / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_minrp{MIN_RP}_minurl{MIN_URL}.graphml"
+)
+OUTPUT_PLOT = (
+    TOPICS_PATH
+    / f"{TOPIC_NAME}/eda/distribution_opinions_minrp{MIN_RP}_minurl{MIN_URL}.png"
+)
 
 
 def process_user_bias_network():
@@ -73,7 +104,7 @@ def process_user_bias_network():
     # Safety check before saving/plotting
     if matched_node_count == 0:
         print(
-            "⚠️ WARNING: No nodes matched. Check if the GraphML contains the correct user IDs."
+            "WARNING: No nodes matched. Check if the GraphML contains the correct user IDs."
         )
 
     os.makedirs(OUTPUT_GRAPHML.parent, exist_ok=True)
@@ -82,7 +113,7 @@ def process_user_bias_network():
 
     # 4. Visualization (Filtered to only show mapped nodes)
     if matched_node_count == 0:
-        print("⚠️ WARNING: No nodes matched. Skipping visualization to prevent errors.")
+        print("WARNING: No nodes matched. Skipping visualization to prevent errors.")
         return
 
     print("Generating visualization for mapped nodes only...")
