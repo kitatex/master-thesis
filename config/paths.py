@@ -19,6 +19,7 @@ def require_env(key: str) -> str:
 REPO_DIR_PATH = Path(require_env("REPO_DIR_PATH"))
 DATA_BASE_PATH = Path(require_env("DATA_BASE_PATH"))
 DATA_TEST_PATH = Path(require_env("DATA_TEST_PATH"))
+DATA_MIN10_PATH = Path(require_env("DATA_MIN10_PATH"))
 USER_POSTS_DIR = Path(require_env("USER_POSTS"))
 
 
@@ -35,3 +36,5 @@ MBFC_CSV_PATH = Path(require_env("MBFC_CSV_PATH"))
 # Derive more paths
 DATA_DIR = DATA_TEST_PATH if USE_TEST_DATA else DATA_BASE_PATH
 PATH_USER_POSTS = DATA_DIR / USER_POSTS_DIR
+
+PATH_USER_POSTS_MIN10 = DATA_MIN10_PATH / USER_POSTS_DIR

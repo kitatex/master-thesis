@@ -17,21 +17,19 @@ TARGET_HASHTAGS (List)
 OUTPUT_FILE (.jsonl)
 """
 
-INPUT_SUBSET = TOPICS_PATH / "_multiple/20260514/posts.jsonl"
+INPUT_SUBSET = TOPICS_PATH / "_multiple/20260523/posts.jsonl"
 
-TOPIC = "#gaza"
-
+TOPIC = "#gamedev"
 HASHTAG_ONLY = False
 
-# --- HASHTAGS ---
-# path = TOPICS_PATH / f"{TOPIC}/co_hashtags/chosen_closest_hashtags.jsonl"
-# TARGET_KEYWORDS = extract_hashtags_from_jsonl(path)
-# OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/co_hashtags/posts_co_hashtags.jsonl"
-
-# --- KEYWORDS ---
-path = TOPICS_PATH / f"{TOPIC}/keywords/chosen_keywords_bigrams.jsonl"
-TARGET_KEYWORDS = extract_keys_from_jsonl(path)
-OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/keywords/posts.jsonl"
+if HASHTAG_ONLY:
+    path = TOPICS_PATH / f"{TOPIC}/co_hashtags/chosen_closest_hashtags.jsonl"
+    TARGET_KEYWORDS = extract_hashtags_from_jsonl(path)
+    OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/co_hashtags/posts_co_hashtags.jsonl"
+else:
+    path = TOPICS_PATH / f"{TOPIC}/keywords/chosen_keywords_bigrams.jsonl"
+    TARGET_KEYWORDS = extract_keys_from_jsonl(path)
+    OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/keywords/posts.jsonl"
 
 
 def filter_subset():

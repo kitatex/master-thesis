@@ -4,8 +4,8 @@ import networkx as nx
 
 from config.paths import TOPICS_PATH
 
-TOPIC_NAME = "#ukraine"
-MIN_RP = 3
+TOPIC_NAME = "#gamedev"
+MIN_RP = 2
 MIN_URL = 2
 
 # --- Input ---
@@ -21,7 +21,7 @@ OUTPUT_GRAPHML = (
 )
 
 
-def calculate_opinion_diffusion(G_undirected, max_iter=100, tolerance=1e-5):
+def calculate_opinion_diffusion(G_undirected, max_iter=500, tolerance=1e-5):
     """
     Runs the DeGroot diffusion math over an undirected topology.
     Returns a dictionary mapping {node_id: final_interpolated_score}.

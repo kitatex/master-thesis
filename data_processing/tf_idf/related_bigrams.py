@@ -15,7 +15,7 @@ Ordered Bigram Generator: Captures bigrams in their original sequence.
 Filters out standard English stopwords and previously identified unigrams.
 """
 
-TOPIC_NAME = "#dadjokes"
+TOPIC_NAME = "#gamedev"
 
 SEED_HASHTAG_CORPUS = (
     TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts_merged_deduplicated.jsonl"

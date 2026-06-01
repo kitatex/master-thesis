@@ -8,7 +8,7 @@ from config.logging import logger
 from config.paths import TOPICS_PATH
 
 
-TOPIC_NAME = "#climatechange"
+TOPIC_NAME = "#gamedev"
 
 # True, if merging seed and co-hashtags
 # False, if merging hashtag corpus and keyword posts

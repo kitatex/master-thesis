@@ -6,11 +6,9 @@ import os
 
 from config.paths import TOPICS_PATH, MBFC_CSV_PATH
 
-TOPIC_NAME = "#aiethics"  # e.g., #climatecrisis
+TOPIC_NAME = "#dadjokes"
 
-INPUT_DATA = (
-    TOPICS_PATH / f"{TOPIC_NAME}/hashtag_corpus/posts_merged_deduplicated.jsonl"
-)
+INPUT_DATA = TOPICS_PATH / f"{TOPIC_NAME}/full/posts_merged_deduplicated.jsonl"
 
 OUTPUT_DIR = TOPICS_PATH / f"{TOPIC_NAME}/eda/url_eda.csv"
 
@@ -124,7 +122,7 @@ def process_data(jsonl_path, mbfc_csv_path, output_csv_path):
     results_df.to_csv(output_csv_path, index=False)
 
     print("\n" + "=" * 30)
-    print("SUMMARY STATISTICS")
+    print(f"SUMMARY STATISTICS for {TOPIC_NAME}")
     print("=" * 30)
     print(f"Total Posts Processed: {results_df['post_id'].nunique()}")
     print(f"Total URLs Extracted: {total_urls_found}")

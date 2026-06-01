@@ -11,7 +11,7 @@ INPUT_DIR = TOPICS_PATH / f"{TOPIC_NAME}/eda/url_eda.csv"
 OUTPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/eda/mbfc_eda_distribution.png"
 
 
-def visualize_eda(matched_csv_path):
+def columns_count(matched_csv_path):
     df = pd.read_csv(matched_csv_path)
     matched_df = df.dropna(subset=["bias_score", "factual_reporting"]).copy()
     matched_df["bias_score_str"] = matched_df["bias_score"].astype(str)
@@ -109,4 +109,4 @@ def visualize_eda(matched_csv_path):
 
 
 if __name__ == "__main__":
-    visualize_eda(INPUT_DIR)
+    columns_count(INPUT_DIR)
