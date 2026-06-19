@@ -4,6 +4,8 @@ import networkx as nx
 
 from config.paths import TOPICS_PATH
 
+"""currently not in use"""
+
 TOPIC_NAME = "#gamedev"
 MIN_RP = 2
 MIN_URL = 2

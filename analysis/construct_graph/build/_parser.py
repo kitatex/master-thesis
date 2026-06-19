@@ -6,7 +6,7 @@ from typing import Generator, Tuple
 def extract_interactions(
     jsonl_path: Path,
     include_reposts: bool = True,
-    include_quotes: bool = True,
+    include_quotes: bool = False,
     include_replies: bool = False,
 ) -> Generator[Tuple[int, int], None, None]:
     """

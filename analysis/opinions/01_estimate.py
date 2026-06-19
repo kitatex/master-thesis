@@ -4,10 +4,10 @@ import pandas as pd
 
 from config.paths import TOPICS_PATH, MBFC_CSV_PATH
 
-TOPIC_NAME = "nuclearpower"
-MIN_RP = 1  # has to match
+TOPIC_NAME = "#gaza"
+MIN_RP = 2  # has to match
 
-MIN_URL = 1  # free parameter
+MIN_URL = 3  # free parameter
 
 # Choose which list of URLs to use for scoring: "global" or "discussion"
 URL_SOURCE = "global"

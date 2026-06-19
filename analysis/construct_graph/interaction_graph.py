@@ -5,16 +5,18 @@ from analysis.construct_graph.build._parser import extract_interactions
 from analysis.construct_graph.build._constructor import create_weighted_df, df_to_igraph
 from analysis.construct_graph.build._processor import prune_graph
 
-TOPIC_NAME = "#climatechange"
+TOPIC_NAME = "#gaza"
 MIN_RP = 2
 LARGEST_COMPONENT = True
 DIRECTED = False
-WEIGHTED = True
+WEIGHTED = False
+
+INPUT_DATA = TOPICS_PATH / f"{TOPIC_NAME}/full/posts.jsonl"
+INPUT_DATA = TOPICS_PATH / f"{TOPIC_NAME}/full/posts_mbfc_matched.jsonl"
+
+INPUT_DATA = TOPICS_PATH / f"{TOPIC_NAME}/keywords/posts.jsonl"
 
 INPUT_DATA = TOPICS_PATH / f"{TOPIC_NAME}/full/posts_merged_deduplicated.jsonl"
-INPUT_DATA = TOPICS_PATH / f"{TOPIC_NAME}/full/posts.jsonl"
-INPUT_DATA = TOPICS_PATH / f"{TOPIC_NAME}/keywords/posts.jsonl"
-INPUT_DATA = TOPICS_PATH / f"{TOPIC_NAME}/full/posts_mbfc_matched.jsonl"
 
 OUTPUT_DIR = TOPICS_PATH / f"{TOPIC_NAME}/graph"
 

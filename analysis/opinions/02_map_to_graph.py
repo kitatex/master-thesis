@@ -16,10 +16,10 @@ Creates two outputs:
 2) A visualization (histogram) of the opinion distribution. 
 """
 
-TOPIC_NAME = "nuclearpower"
+TOPIC_NAME = "#gaza"
 
-MIN_RP = 1  # has to match csv
-MIN_URL = 1  # has to match csv
+MIN_RP = 2  # has to match csv
+MIN_URL = 3  # has to match csv
 URL_SOURCE = "global"  # has to match csv; "global" or "discussion"
 
 
@@ -34,13 +34,14 @@ INPUT_GRAPHML = (
 )
 INPUT_GRAPHML = (
     TOPICS_PATH
-    / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_minrp{MIN_RP}_largecomp_undir.graphml"
+    / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_minrp{MIN_RP}_largecomp_undir_unweighted.graphml"
 )
+
 
 # --- Output ---
 OUTPUT_GRAPHML = (
     TOPICS_PATH
-    / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_{URL_SOURCE}_minrp{MIN_RP}_minurl{MIN_URL}.graphml"
+    / f"{TOPIC_NAME}/graph/with_opinions/{TOPIC_NAME}_{URL_SOURCE}_minrp{MIN_RP}_minurl{MIN_URL}.graphml"
 )
 OUTPUT_PLOT = (
     TOPICS_PATH
@@ -136,11 +137,11 @@ def process_user_bias_network():
 
     # [FIX]: Updated the colormap normalizer to match the -1.5 to 1.5 range
     cmap = plt.get_cmap("coolwarm")
-    norm = mcolors.Normalize(vmin=-1.5, vmax=1.5, clip=True)
+    norm = mcolors.Normalize(vmin=-1.5, vmax=0.5, clip=True)
 
     # [FIX]: Expanded the histogram range to -1.5 to 1.5
     ax_hist.hist(
-        user_opinions, bins=30, range=(-1.5, 1.5), edgecolor="black", alpha=0.7
+        user_opinions, bins=30, range=(-1.5, 0.5), edgecolor="black", alpha=0.7
     )
 
     patches = ax_hist.patches
@@ -158,6 +159,7 @@ def process_user_bias_network():
     ax_hist.grid(axis="y", linestyle="--", alpha=0.7)
 
     plt.tight_layout()
+    OUTPUT_PLOT.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(OUTPUT_PLOT, dpi=300)
     print(f"Visualization saved to {OUTPUT_PLOT}")
 

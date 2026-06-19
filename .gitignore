@@ -19,6 +19,5 @@ logs/
 # Data typically too large for GitHub
 datasets/topics/
 
-# todo delete:
-datasets/univie/  
-data_processing/query/copy_univie_posts.py
+# Jupyter notebooks
+analysis/notebooks/

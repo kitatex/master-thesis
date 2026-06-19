@@ -27,11 +27,11 @@ HASHTAG_ONLY (bool): whether we are looking ONLY at a list of hashtag keywords. 
 """
 
 
-TOPIC = "defundpolice"
+TOPIC = "communism"
 
 HASHTAG_ONLY = False
 
-ADD_NO_WHITESPACE_KEYWORDS = True
+ADD_NO_WHITESPACE_KEYWORDS = False
 
 # PATH_USER_POSTS (full) or PATH_USER_POSTS_MIN10 (filtered)
 POSTS_PATH = PATH_USER_POSTS_MIN10
@@ -42,7 +42,6 @@ if HASHTAG_ONLY:
     KEYWORDS = extract_hashtags_from_jsonl(path)
     OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/co_hashtags/posts.jsonl"
 else:
-    path = TOPICS_PATH / f"{TOPIC}/keywords/chosen_keywords_bigrams.jsonl"
     path = TOPICS_PATH / f"{TOPIC}/keywords/keywords.jsonl"
     OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/keywords/posts.jsonl"
 
