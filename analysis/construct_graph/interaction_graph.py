@@ -5,7 +5,7 @@ from analysis.construct_graph.build._parser import extract_interactions
 from analysis.construct_graph.build._constructor import create_weighted_df, df_to_igraph
 from analysis.construct_graph.build._processor import prune_graph
 
-TOPIC_NAME = "#gaza"
+TOPIC_NAME = "#gamedev"
 MIN_RP = 2
 LARGEST_COMPONENT = True
 DIRECTED = False

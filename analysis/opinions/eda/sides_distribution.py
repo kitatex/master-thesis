@@ -4,7 +4,7 @@ import numpy as np
 
 from config.paths import TOPICS_PATH
 
-TOPIC_NAME = "immigration"
+TOPIC_NAME = "#gamedev"
 
 MIN_RP = 2
 MIN_URL = 3

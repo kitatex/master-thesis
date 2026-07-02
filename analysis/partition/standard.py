@@ -7,7 +7,7 @@ import leidenalg
 
 from config.paths import TOPICS_PATH
 
-TOPIC_NAME = "#gaza"
+TOPIC_NAME = "#climatechange"
 MIN_RP = 2
 MIN_URL = 3
 URL_SOURCE = "global"

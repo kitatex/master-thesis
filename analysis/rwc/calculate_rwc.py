@@ -6,22 +6,23 @@ from config.paths import TOPICS_PATH, RWC_PATH
 REPRODUCE_PAPER = False
 
 if REPRODUCE_PAPER:
-    # retweet_graph_beefban_threshold_largest_CC_partitioned_k2.graphml
-    # retweet_graph_russia_march_threshold_largest_CC_partitioned_k2.graphml
-    # retweet_graph_sxsw_threshold_largest_CC_partitioned_k2.graphml
-    # retweet_graph_germanwings_threshold_largest_CC_partitioned_k2.graphml
+    # controversial:
+    # retweet_graph_beefban_threshold_largest_CC_undir_gcc.graphml
+    # retweet_graph_russia_march_threshold_largest_CC_undir_gcc.graphml
+    # uncontroversial:
+    # retweet_graph_sxsw_threshold_largest_CC_undir_gcc.graphml
+    # retweet_graph_germanwings_threshold_largest_CC_undir_gcc.graphml
 
-    FILE = "retweet_graph_germanwings_threshold_largest_CC_partitioned_k2.graphml"
-    PATH_PARTITIONED_GRAPH = RWC_PATH / f"graphs_graphml_selection/{FILE}"
-
+    FILE = "retweet_graph_germanwings_threshold_largest_CC_undir_gcc.graphml"
+    PATH_PARTITIONED_GRAPH = RWC_PATH / f"graphs_graphml_selection/partit/{FILE}"
 
 else:
-    TOPIC_NAME = "#aiethics"
-    MIN_RP = 3
+    TOPIC_NAME = "#gaza"
 
-    PATH_PARTITIONED_GRAPH = (
-        TOPICS_PATH / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_partit_minrp{MIN_RP}.graphml"
-    )
+    FILE = f"{TOPIC_NAME}/graph/partition/{TOPIC_NAME}_minrp2_leidenmeta0.3graphml"
+
+    PATH_PARTITIONED_GRAPH = TOPICS_PATH / FILE
+    print(PATH_PARTITIONED_GRAPH)
 
 
 def calculate_rwc_rwr(

@@ -3,9 +3,9 @@ from scipy.sparse.linalg import eigsh
 import igraph as ig
 import leidenalg
 
-from config.paths import TOPICS_PATH
+from config.paths import TOPICS_PATH, RWC_PATH
 
-TOPIC_NAME = "immigration"
+TOPIC_NAME = "#gamedev"
 MIN_RP = 2
 MIN_URL = 3
 URL_SOURCE = "global"
@@ -16,17 +16,18 @@ ALGORITHM = "leidenmeta"
 
 INPUT_GRAPH = (
     TOPICS_PATH
-    / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_minrp{MIN_RP}_largecomp_undir_unweighted.graphml"
-)
-INPUT_GRAPH = (
-    TOPICS_PATH
     / f"{TOPIC_NAME}/graph/with_opinions/{TOPIC_NAME}_{URL_SOURCE}_minrp{MIN_RP}_minurl{MIN_URL}.graphml"
 )
-
 PARTIT_GRAPH = (
     TOPICS_PATH
     / f"{TOPIC_NAME}/graph/partition/{TOPIC_NAME}_minrp{MIN_RP}_part_{ALGORITHM}{LEIDEN_RESOLUTION}.graphml"
 )
+
+# Paper reproduction
+GARIMELLA_GRAPH = "retweet_graph_sxsw_threshold_largest_CC_undir_gcc.graphml"
+INPUT_GRAPH = RWC_PATH / f"graphs_graphml_selection/{GARIMELLA_GRAPH}"
+PARTIT_GRAPH = RWC_PATH / f"graphs_graphml_selection/partit/{GARIMELLA_GRAPH}"
+
 
 PARTIT_GRAPH.parent.mkdir(parents=True, exist_ok=True)
 

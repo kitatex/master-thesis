@@ -4,7 +4,7 @@ import pandas as pd
 
 from config.paths import TOPICS_PATH, MBFC_CSV_PATH
 
-TOPIC_NAME = "#gaza"
+TOPIC_NAME = "#gamedev"
 MIN_RP = 2  # has to match
 
 MIN_URL = 3  # free parameter

@@ -10,7 +10,7 @@ from config.paths import TOPICS_PATH, PATH_USER_POSTS
 
 """Get a global-level and discussion-level list of shared URLs for each user in a graph."""
 
-TOPIC_NAME = "#gaza"
+TOPIC_NAME = "#gamedev"
 MIN_RP = 2  # has to match graph
 
 INPUT_GRAPHML = (
