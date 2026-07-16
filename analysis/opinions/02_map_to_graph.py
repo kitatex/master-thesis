@@ -16,7 +16,7 @@ Creates two outputs:
 2) A visualization (histogram) of the opinion distribution. 
 """
 
-TOPIC_NAME = "#gamedev"
+TOPIC_NAME = "covid-19"
 
 MIN_RP = 2  # has to match csv
 MIN_URL = 3  # has to match csv

@@ -5,7 +5,7 @@ import leidenalg
 
 from config.paths import TOPICS_PATH, RWC_PATH
 
-TOPIC_NAME = "#gamedev"
+TOPIC_NAME = "game development"
 MIN_RP = 2
 MIN_URL = 3
 URL_SOURCE = "global"
@@ -24,9 +24,9 @@ PARTIT_GRAPH = (
 )
 
 # Paper reproduction
-GARIMELLA_GRAPH = "retweet_graph_sxsw_threshold_largest_CC_undir_gcc.graphml"
-INPUT_GRAPH = RWC_PATH / f"graphs_graphml_selection/{GARIMELLA_GRAPH}"
-PARTIT_GRAPH = RWC_PATH / f"graphs_graphml_selection/partit/{GARIMELLA_GRAPH}"
+# GARIMELLA_GRAPH = "retweet_graph_sxsw_threshold_largest_CC_undir_gcc.graphml"
+# INPUT_GRAPH = RWC_PATH / f"graphs_graphml_selection/{GARIMELLA_GRAPH}"
+# PARTIT_GRAPH = RWC_PATH / f"graphs_graphml_selection/partit/{GARIMELLA_GRAPH}"
 
 
 PARTIT_GRAPH.parent.mkdir(parents=True, exist_ok=True)

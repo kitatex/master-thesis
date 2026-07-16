@@ -17,9 +17,9 @@ TARGET_HASHTAGS (List)
 OUTPUT_FILE (.jsonl)
 """
 
-INPUT_SUBSET = TOPICS_PATH / "_multiple/20260523/posts.jsonl"
+INPUT_SUBSET = TOPICS_PATH / "_multiple/20260716/posts.jsonl"
 
-TOPIC = "#gamedev"
+TOPIC = "cooking"
 HASHTAG_ONLY = False
 
 if HASHTAG_ONLY:
@@ -27,7 +27,7 @@ if HASHTAG_ONLY:
     TARGET_KEYWORDS = extract_hashtags_from_jsonl(path)
     OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/co_hashtags/posts_co_hashtags.jsonl"
 else:
-    path = TOPICS_PATH / f"{TOPIC}/keywords/chosen_keywords_bigrams.jsonl"
+    path = TOPICS_PATH / f"{TOPIC}/keywords/keywords.jsonl"
     TARGET_KEYWORDS = extract_keys_from_jsonl(path)
     OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/keywords/posts.jsonl"
 

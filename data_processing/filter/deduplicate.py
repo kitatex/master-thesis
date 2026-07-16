@@ -9,9 +9,9 @@ from config.paths import TOPICS_PATH
 Deduplicates any posts in a .jsonl file.
 """
 
-TOPIC_NAME = "#climatechange"  # e.g., #climatechange
+TOPIC_NAME = "cooking"  # e.g., #climatechange
 
-DATA_LEVEL = "seed_hashtag"  # seed_hashtag or hashtag_corpus
+DATA_LEVEL = "keywords"  # seed_hashtag or hashtag_corpus
 
 
 INPUT_PATH = TOPICS_PATH / f"{TOPIC_NAME}/{DATA_LEVEL}/posts.jsonl"

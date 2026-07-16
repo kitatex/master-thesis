@@ -26,8 +26,7 @@ OUTPUT_FILE (.jsonl): Output location.
 HASHTAG_ONLY (bool): whether we are looking ONLY at a list of hashtag keywords. If False, a mix of hashtags and non-hashtags also works.
 """
 
-
-TOPIC = "communism"
+TOPIC = "immigration and refugees"
 
 HASHTAG_ONLY = False
 
@@ -38,15 +37,19 @@ POSTS_PATH = PATH_USER_POSTS_MIN10
 
 
 if HASHTAG_ONLY:
-    path = TOPICS_PATH / f"{TOPIC}/co_hashtags/chosen_closest_hashtags.jsonl"
-    KEYWORDS = extract_hashtags_from_jsonl(path)
-    OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/co_hashtags/posts.jsonl"
+    # path = TOPICS_PATH / f"{TOPIC}/co_hashtags/chosen_closest_hashtags.jsonl"
+    # KEYWORDS = extract_hashtags_from_jsonl(path)
+
+    KEYWORDS = ["#capitalism"]
+
+    OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/seed_hashtag/posts.jsonl"
+
 else:
     path = TOPICS_PATH / f"{TOPIC}/keywords/keywords.jsonl"
     OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/keywords/posts.jsonl"
 
-    # path = TOPICS_PATH / "_multiple/20260523/keywords.jsonl"
-    # OUTPUT_FILE = TOPICS_PATH / "_multiple/20260523/posts.jsonl"
+    path = TOPICS_PATH / "_multiple/20260716/keywords.jsonl"
+    OUTPUT_FILE = TOPICS_PATH / "_multiple/20260716/posts.jsonl"
 
     KEYWORDS = extract_keys_from_jsonl(path)
 
@@ -58,24 +61,6 @@ logger.info(
 )
 if ADD_NO_WHITESPACE_KEYWORDS:
     clean_keywords = extend_with_no_spaces(clean_keywords)
-
-FORBIDDEN_KEYWORDS_FILE = TOPICS_PATH / f"{TOPIC}/keywords/forbidden_keywords.jsonl"
-forbidden_keywords = extract_keys_from_jsonl(FORBIDDEN_KEYWORDS_FILE)
-print(forbidden_keywords)
-
-
-SECONDARY_KEYWORDS_FILE = TOPICS_PATH / f"{TOPIC}/keywords/secondary_keywords.jsonl"
-secondary_keywords = []
-
-if SECONDARY_KEYWORDS_FILE.exists():
-    secondary_keywords = optimize_keyword_list(
-        [k.lower() for k in extract_keys_from_jsonl(SECONDARY_KEYWORDS_FILE)]
-    )
-    if ADD_NO_WHITESPACE_KEYWORDS:
-        secondary_keywords = extend_with_no_spaces(secondary_keywords)
-    logger.info(f"Loaded {len(secondary_keywords)} secondary keywords.")
-else:
-    logger.info("No secondary keywords loaded.")
 
 
 def find_posts_with_keyword(file_path: Path):
@@ -92,26 +77,12 @@ def find_posts_with_keyword(file_path: Path):
         # Primary keyword match
         if HASHTAG_ONLY:
             post_tags = get_post_hashtags(data, en_only=False)
-
             is_match = any(ck in post_tags for ck in clean_keywords)
-
         else:
             is_match = any(ck in post_text for ck in clean_keywords)
 
         if not is_match:
             continue
-
-        # Forbidden keyword filter
-        if forbidden_keywords:
-            if any(fk in post_text for fk in forbidden_keywords):
-                continue
-
-        # Secondary keyword requirement
-        if secondary_keywords:
-            has_secondary_match = any(sk in post_text for sk in secondary_keywords)
-
-            if not has_secondary_match:
-                continue
 
         matches.append(data)
 

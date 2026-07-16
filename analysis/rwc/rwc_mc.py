@@ -101,9 +101,6 @@ def rwc_single_run(
         else:
             right_left += 1
 
-    #
-    # Same equations as authors' code
-    #
     e1 = left_left / (left_left + right_left)
     e2 = left_right / (left_right + right_right)
     e3 = right_left / (left_left + right_left)

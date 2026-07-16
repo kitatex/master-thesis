@@ -10,7 +10,7 @@ from config.paths import TOPICS_PATH, PATH_USER_POSTS
 
 """Get a global-level and discussion-level list of shared URLs for each user in a graph."""
 
-TOPIC_NAME = "#gamedev"
+TOPIC_NAME = "artificial intelligence"
 MIN_RP = 2  # has to match graph
 
 INPUT_GRAPHML = (
@@ -18,8 +18,7 @@ INPUT_GRAPHML = (
     / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_minrp{MIN_RP}_largecomp_undir_unweighted.graphml"
 )
 
-DISCUSSION_POSTS_FILE = TOPICS_PATH / f"{TOPIC_NAME}/full/posts_mbfc_matched.jsonl"
-DISCUSSION_POSTS_FILE = TOPICS_PATH / f"{TOPIC_NAME}/keywords/posts.jsonl"
+DISCUSSION_POSTS_FILE = TOPICS_PATH / f"{TOPIC_NAME}/keywords/posts_deduplicated.jsonl"
 
 OUTPUT_CSV = TOPICS_PATH / f"{TOPIC_NAME}/metadata/extracted_urls_minrp{MIN_RP}.csv"
 
