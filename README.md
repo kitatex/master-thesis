@@ -1,6 +1,6 @@
 # Master Thesis Code
 
-Leon Olszewski
+Data processing code for my master's thesis. The goal is to test and adapt polarization measurement mentrics for specific social network datasets (Bluesky).
 
 ## Setup
 
@@ -12,6 +12,8 @@ Leon Olszewski
 
 ## Data
 
-A pipeline for obtaining data for a certain discussion topic can be found [here](data/README_DATA.md). 
+The datasets are not uploaded to GitHub for size reasons.
+
+A pipeline for obtaining data for a certain discussion topic can be found [here](datasets/README_DATA.md). 
 
 
