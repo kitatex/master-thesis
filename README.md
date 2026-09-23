@@ -14,6 +14,6 @@ Data processing code for my master's thesis. The goal is to test and adapt polar
 
 The datasets are not uploaded to GitHub for size reasons.
 
-A pipeline for obtaining data for a certain discussion topic can be found [here](datasets/README_DATA.md). 
+A pipeline for obtaining data for a certain discussion topic can be found [here](datasets/README_DATASETS.md). 
 
 
