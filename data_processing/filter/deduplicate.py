@@ -9,7 +9,7 @@ from config.paths import TOPICS_PATH
 Deduplicates any posts in a .jsonl file.
 """
 
-TOPIC_NAME = "cooking"  # e.g., #climatechange
+TOPIC_NAME = "0 bg3"
 
 DATA_LEVEL = "keywords"  # seed_hashtag or hashtag_corpus
 

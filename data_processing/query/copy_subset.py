@@ -1,9 +1,8 @@
 import orjson
 from data_processing.util.functions import (
     iter_jsonl,
-    get_post_hashtags,
     extract_keys_from_jsonl,
-    extract_hashtags_from_jsonl,
+    extend_with_no_spaces,
 )
 from config.logging import logger
 from config.paths import TOPICS_PATH
@@ -17,29 +16,20 @@ TARGET_HASHTAGS (List)
 OUTPUT_FILE (.jsonl)
 """
 
-INPUT_SUBSET = TOPICS_PATH / "_multiple/20260716/posts.jsonl"
+INPUT_SUBSET = TOPICS_PATH / "_multiple/20261012/posts.jsonl"
 
-TOPIC = "cooking"
-HASHTAG_ONLY = False
+TOPIC = "0 minecraft"
 
-if HASHTAG_ONLY:
-    path = TOPICS_PATH / f"{TOPIC}/co_hashtags/chosen_closest_hashtags.jsonl"
-    TARGET_KEYWORDS = extract_hashtags_from_jsonl(path)
-    OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/co_hashtags/posts_co_hashtags.jsonl"
-else:
-    path = TOPICS_PATH / f"{TOPIC}/keywords/keywords.jsonl"
-    TARGET_KEYWORDS = extract_keys_from_jsonl(path)
-    OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/keywords/posts.jsonl"
+path = TOPICS_PATH / f"{TOPIC}/keywords/keywords.jsonl"
+TARGET_KEYWORDS = extract_keys_from_jsonl(path)
+clean_keywords = extend_with_no_spaces(TARGET_KEYWORDS)
+print(f"{len(TARGET_KEYWORDS)} vs {len(clean_keywords)} keywords")
+
+OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/keywords/posts.jsonl"
 
 
 def filter_subset():
-    # 1. Setup clean targets based on the matching mode
-    if HASHTAG_ONLY:
-        # Maintain consistency: lowercase and remove leading '#' for tag intersection
-        clean_targets = {k.lower().lstrip("#") for k in TARGET_KEYWORDS}
-    else:
-        # Lowercase for general string matching (keeps spaces for bigrams)
-        clean_targets = [k.lower() for k in TARGET_KEYWORDS]
+    clean_targets = [k.lower() for k in clean_keywords]
 
     if not INPUT_SUBSET.exists():
         logger.error(f"Input subset not found at {INPUT_SUBSET}")
@@ -49,27 +39,16 @@ def filter_subset():
 
     match_count = 0
     total_processed = 0
-    mode_label = "hashtags" if HASHTAG_ONLY else "general keywords"
-
-    logger.info(f"Filtering {INPUT_SUBSET.name} for {mode_label}: {TARGET_KEYWORDS}")
 
     with open(OUTPUT_FILE, "wb") as out_f:
         for post in iter_jsonl(INPUT_SUBSET):
             total_processed += 1
             is_match = False
 
-            if HASHTAG_ONLY:
-                # Mode A: Check extracted hashtags only
-                post_tags = get_post_hashtags(post)
-                if any(tag in clean_targets for tag in post_tags):
-                    is_match = True
-            else:
-                # Mode B: Check for keyword/bigram existence in full body text
-                post_text = post.get("text", "").lower()
-                if post_text and any(kw in post_text for kw in clean_targets):
-                    is_match = True
+            post_text = post.get("text", "").lower()
+            if post_text and any(kw in post_text for kw in clean_targets):
+                is_match = True
 
-            # 2. Write if a match was found in either mode
             if is_match:
                 out_f.write(orjson.dumps(post))
                 out_f.write(b"\n")

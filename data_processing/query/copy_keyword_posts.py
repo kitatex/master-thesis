@@ -26,33 +26,22 @@ OUTPUT_FILE (.jsonl): Output location.
 HASHTAG_ONLY (bool): whether we are looking ONLY at a list of hashtag keywords. If False, a mix of hashtags and non-hashtags also works.
 """
 
-TOPIC = "immigration and refugees"
-
+TOPIC = "0 bg3"
 HASHTAG_ONLY = False
-
-ADD_NO_WHITESPACE_KEYWORDS = False
+ADD_NO_WHITESPACE_KEYWORDS = True
 
 # PATH_USER_POSTS (full) or PATH_USER_POSTS_MIN10 (filtered)
 POSTS_PATH = PATH_USER_POSTS_MIN10
 
+path = TOPICS_PATH / f"{TOPIC}/keywords/keywords.jsonl"
+OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/keywords/posts.jsonl"
 
-if HASHTAG_ONLY:
-    # path = TOPICS_PATH / f"{TOPIC}/co_hashtags/chosen_closest_hashtags.jsonl"
-    # KEYWORDS = extract_hashtags_from_jsonl(path)
+# path = TOPICS_PATH / "_multiple/20261012/keywords.jsonl"
+# OUTPUT_FILE = TOPICS_PATH / "_multiple/20261012/posts.jsonl"
 
-    KEYWORDS = ["#capitalism"]
 
-    OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/seed_hashtag/posts.jsonl"
-
-else:
-    path = TOPICS_PATH / f"{TOPIC}/keywords/keywords.jsonl"
-    OUTPUT_FILE = TOPICS_PATH / f"{TOPIC}/keywords/posts.jsonl"
-
-    path = TOPICS_PATH / "_multiple/20260716/keywords.jsonl"
-    OUTPUT_FILE = TOPICS_PATH / "_multiple/20260716/posts.jsonl"
-
-    KEYWORDS = extract_keys_from_jsonl(path)
-
+# Keyword processing
+KEYWORDS = extract_keys_from_jsonl(path)
 
 original_len = len(KEYWORDS)
 clean_keywords = optimize_keyword_list([k.lower() for k in KEYWORDS])
@@ -61,6 +50,7 @@ logger.info(
 )
 if ADD_NO_WHITESPACE_KEYWORDS:
     clean_keywords = extend_with_no_spaces(clean_keywords)
+    print(f"Added no space keywords, now there are {len(clean_keywords)} keywords.")
 
 
 def find_posts_with_keyword(file_path: Path):

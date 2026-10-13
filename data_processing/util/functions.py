@@ -152,6 +152,10 @@ def optimize_keyword_list(keywords):
         if not is_redundant:
             optimized.append(kw)
 
+        else:
+            # 4. Print the redundant keyword being removed
+            print(f"Removed redundant keyword: '{kw}'")
+
     return optimized
 
 
@@ -177,10 +181,7 @@ def extend_with_no_spaces(strings_list: list[str]) -> list[str]:
     # Create a list of space-removed strings only for those that actually contain spaces
     no_spaces = [s.replace(" ", "") for s in strings_list if " " in s]
 
-    # Extend the original list in-place
-    strings_list.extend(no_spaces)
-
-    return strings_list
+    return strings_list + no_spaces
 
 
 def iter_jsonl(file_path: Path) -> Generator[dict, None, None]:
