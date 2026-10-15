@@ -17,4 +17,5 @@
             "color": "blue"
         },
     ],
+    "python.terminal.useEnvFile": true,
 }
