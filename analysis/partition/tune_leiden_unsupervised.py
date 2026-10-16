@@ -14,11 +14,11 @@ from analysis.partition.leiden_meta import (
     build_community_metagraph,
     spectral_partition_graph,
 )
-from analysis.polarization_measures.rwc.rwc_vectorized import (
+from analysis.polarization_metrics.rwc_vectorized import (
     precompute_adjacency,
     compute_rwc_from_adj,
 )
-from analysis.polarization_measures.opc.point_biserial import (
+from analysis.polarization_metrics.point_biserial import (
     is_node_interpolated,
     compute_point_biserial_arrays,
 )

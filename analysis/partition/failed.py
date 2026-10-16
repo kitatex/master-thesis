@@ -7,29 +7,45 @@ import leidenalg
 
 from config.paths import TOPICS_PATH
 
-TOPIC_NAME = "#climatechange"
+
+RANDOM_SEED = 123
+
+
+# Input Information
+TOPIC_NAME = "immigration"
 MIN_RP = 2
 MIN_URL = 3
 URL_SOURCE = "global"
+INTERPOLATED = True
 
-ALGORITHM = "spectral"  # kern, spectral, louvain, leiden
 
-INPUT_GRAPH = (
-    TOPICS_PATH
-    / f"{TOPIC_NAME}/graph/with_opinions/{TOPIC_NAME}_{URL_SOURCE}_minrp{MIN_RP}_minurl{MIN_URL}.graphml"
+def get_opinion_graph_path(
+    topic: str,
+    url_source: str = "global",
+    min_rp: int = 2,
+    min_url: int = 3,
+    interpolated: bool = True,
+):
+    suffix = "_interpolated" if interpolated else "_filtered"
+    return (
+        TOPICS_PATH
+        / f"{topic}/graph/with_opinions"
+        / f"{topic}_{url_source}_minrp{min_rp}_minurl{min_url}{suffix}.graphml"
+    )
+
+
+INPUT_GRAPH = get_opinion_graph_path(
+    TOPIC_NAME, URL_SOURCE, MIN_RP, MIN_URL, INTERPOLATED
 )
 
-# #gaza #gaza_minrp2_largecomp_undir_unweighted
 
-INPUT_GRAPH = (
-    TOPICS_PATH
-    / f"{TOPIC_NAME}/graph/{TOPIC_NAME}_minrp{MIN_RP}_largecomp_undir_unweighted.graphml"
-)
+# Output information
 
+LEIDEN_RESOLUTION = 1  # default (don't change)
 
 PARTIT_GRAPH = (
     TOPICS_PATH
-    / f"{TOPIC_NAME}/graph/partition/{TOPIC_NAME}_minrp{MIN_RP}_part_{ALGORITHM}.graphml"
+    / f"{TOPIC_NAME}/graph/partition/failed/{TOPIC_NAME}_minrp{MIN_RP}_all.graphml"
 )
 
 PARTIT_GRAPH.parent.mkdir(parents=True, exist_ok=True)
@@ -161,48 +177,37 @@ print(
 # Partition
 # ------------------------------------------------------------------
 
-if ALGORITHM == "kern":
-    print("Running Kernighan-Lin...")
-    side_0, side_1 = kernighan_lin_bisection(graph_nx)
+algorithms = {
+    "kern": lambda: kernighan_lin_bisection(graph_nx),
+    "spectral": lambda: spectral_partition(graph_nx),
+    "louvain": lambda: louvain_partition(graph_nx),
+    "leiden": lambda: leiden_partition(graph_nx),
+}
 
-elif ALGORITHM == "spectral":
-    side_0, side_1 = spectral_partition(graph_nx)
+for algorithm, partition_function in algorithms.items():
+    side_0, side_1 = partition_function()
 
-elif ALGORITHM == "louvain":
-    side_0, side_1 = louvain_partition(graph_nx)
+    # ------------------------------------------------------------------
+    # Statistics
+    # ------------------------------------------------------------------
 
-elif ALGORITHM == "leiden":
-    side_0, side_1 = leiden_partition(graph_nx)
+    cut_edges = nx.cut_size(graph_nx, side_0, side_1)
 
-else:
-    raise ValueError(f"Unknown algorithm '{ALGORITHM}'")
+    n = graph_nx.number_of_nodes()
 
-# ------------------------------------------------------------------
-# Statistics
-# ------------------------------------------------------------------
+    print(f"\n{algorithm.capitalize()} partition statistics")
+    print("--------------------")
+    print(f"Side 0: {len(side_0)}")
+    print(f"Side 1: {len(side_1)}")
+    print(f"Ratio: {len(side_0) / n:.2%}")
+    print(f"Cut edges: {cut_edges}")
 
-cut_edges = nx.cut_size(graph_nx, side_0, side_1)
-
-n = graph_nx.number_of_nodes()
-
-print("\nPartition statistics")
-print("--------------------")
-print(f"Side 0: {len(side_0)}")
-print(f"Side 1: {len(side_1)}")
-print(f"Ratio: {len(side_0) / n:.2%}")
-print(f"Cut edges: {cut_edges}")
+    membership = build_membership(side_0, side_1)
+    nx.set_node_attributes(graph_nx, membership, f"side_{algorithm}")
 
 # ------------------------------------------------------------------
 # Save graph
 # ------------------------------------------------------------------
-
-membership = build_membership(side_0, side_1)
-
-nx.set_node_attributes(graph_nx, membership, "side")
-
-nx.set_node_attributes(
-    graph_nx, {node: ALGORITHM for node in graph_nx.nodes()}, "algorithm"
-)
 
 nx.write_graphml(graph_nx, str(PARTIT_GRAPH))
 

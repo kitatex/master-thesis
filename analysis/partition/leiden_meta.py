@@ -23,17 +23,12 @@ def get_opinion_graph_path(
     min_url: int = 3,
     interpolated: bool = True,
 ):
-    """Single source of truth for loading graphs from 02_map_to_graph.py."""
-    base_dir = TOPICS_PATH / f"{topic}/graph/with_opinions"
     suffix = "_interpolated" if interpolated else "_filtered"
-    primary = (
-        base_dir / f"{topic}_{url_source}_minrp{min_rp}_minurl{min_url}{suffix}.graphml"
+    return (
+        TOPICS_PATH
+        / f"{topic}/graph/with_opinions"
+        / f"{topic}_{url_source}_minrp{min_rp}_minurl{min_url}{suffix}.graphml"
     )
-    if primary.exists():
-        return primary
-    # Fallback to legacy filename without _interpolated/_filtered
-    print("WARNING!")
-    return base_dir / f"{topic}_{url_source}_minrp{min_rp}_minurl{min_url}.graphml"
 
 
 def extract_giant_component(G: nx.Graph) -> nx.Graph:
