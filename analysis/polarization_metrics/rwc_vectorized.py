@@ -10,9 +10,7 @@ if REPRODUCE_PAPER:
     PARTIT_GRAPH = RWC_PATH / f"graphs_graphml_selection/partit/{FILE}"
 else:
     TOPIC_NAME = "0 pokemon"
-    FILE = (
-        f"{TOPIC_NAME}/graph/partition/{TOPIC_NAME}_minrp2_part_leidenmeta0.3.graphml"
-    )
+    FILE = f"{TOPIC_NAME}/graph/partition/{TOPIC_NAME}_minrp2_part_leidenmeta1.graphml"
     PARTIT_GRAPH = TOPICS_PATH / FILE
 
 

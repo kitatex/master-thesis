@@ -4,24 +4,21 @@ import numpy as np
 
 from config.paths import TOPICS_PATH
 
-TOPIC_NAME = "#gamedev"
+
+TOPIC_NAME = "covid-19"
 
 MIN_RP = 2
 MIN_URL = 3
-URL_SOURCE = "global"
-
-
+LEIDEN_RESOLUTION = 1
 ALGORITHM = "leidenmeta"
-LEIDEN_RESOLUTION = 0.3
 
-INPUT_GRAPH = (
-    TOPICS_PATH
-    / f"{TOPIC_NAME}/graph/partition/{TOPIC_NAME}_minrp{MIN_RP}_part_{ALGORITHM}{LEIDEN_RESOLUTION}.graphml"
-)
+
+FILE = f"{TOPIC_NAME}/graph/partition/{TOPIC_NAME}_minrp2_part_{ALGORITHM}{LEIDEN_RESOLUTION}.graphml"
+INPUT_GRAPH = TOPICS_PATH / FILE
 
 OUTPUT_PLOT = (
     TOPICS_PATH
-    / f"{TOPIC_NAME}/eda/sides_distribution_{ALGORITHM}{LEIDEN_RESOLUTION}.png"
+    / f"{TOPIC_NAME}/eda/{TOPIC_NAME}_sides_distribution_{ALGORITHM}{LEIDEN_RESOLUTION}.png"
 )
 
 
@@ -51,7 +48,7 @@ def main():
     print(f"Side 0 users: {len(side0)}")
     print(f"Side 1 users: {len(side1)}")
 
-    bins = np.linspace(-1.5, 1.5, 31)
+    np.linspace(-1.5, 1.5, 31)
 
     plt.figure(figsize=(12, 6))
 
@@ -60,6 +57,7 @@ def main():
         bins="fd",  # type: ignore
         density=True,
         alpha=0.5,
+        color="#E66100",
         label=f"Side 0 (n={len(side0)})",
     )
 
@@ -68,12 +66,13 @@ def main():
         bins="fd",  # type: ignore
         density=True,
         alpha=0.5,
+        color="#5D3A9B",
         label=f"Side 1 (n={len(side1)})",
     )
 
     plt.xlabel("Estimated Opinion")
     plt.ylabel("Density")
-    plt.title(f"Opinion Distribution by Side\n{TOPIC_NAME} ({ALGORITHM})")
+    plt.title(f"{TOPIC_NAME} - Opinion Distribution for both sides")
 
     plt.legend()
     plt.grid(alpha=0.3)
