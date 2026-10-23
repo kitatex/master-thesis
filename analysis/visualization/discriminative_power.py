@@ -10,7 +10,7 @@ from config.paths import TOPICS_PATH
 # CONFIGURATION & PATHS
 # ==========================================
 RESULTS_DIR = (TOPICS_PATH / "_polarization_results").resolve()
-INPUT_CSV = RESULTS_DIR / "polarization_simulations_n100.csv"
+INPUT_CSV = RESULTS_DIR / "polarization_simulations_n1000.csv"
 
 # Two separate PNG outputs for easy LaTeX integration
 OUTPUT_PLOT_TOPICS = RESULTS_DIR / "fig2_topic_level_breakdown.png"

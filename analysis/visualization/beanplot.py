@@ -11,7 +11,7 @@ from config.paths import TOPICS_PATH
 # CONFIGURATION & PATHS
 # ==========================================
 RESULTS_DIR = (TOPICS_PATH / "_polarization_results").resolve()
-INPUT_CSV = RESULTS_DIR / "polarization_simulations_n100.csv"
+INPUT_CSV = RESULTS_DIR / "polarization_simulations_n1000.csv"
 OUTPUT_PLOT_GARIMELLA = RESULTS_DIR / "fig1_garimella_split_violins.png"
 OUTPUT_STATS_CSV = RESULTS_DIR / "table_metric_comparison_summary.csv"
 

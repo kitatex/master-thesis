@@ -224,52 +224,6 @@ def process_user_bias_network():
     nx.write_graphml(G_processed, OUTPUT_GRAPHML)
     print(f"Updated network saved to {OUTPUT_GRAPHML}")
 
-    # 7. Generate Visualization
-    print("Generating histogram...")
-    fig, ax_hist = plt.subplots(figsize=(10, 6))
-    cmap = plt.get_cmap("coolwarm")
-    norm = mcolors.Normalize(vmin=-1.5, vmax=0.5, clip=True)
-
-    if INTERPOLATE:
-        orig_opinions = [final_opinions[n] for n in final_opinions if n in bias_dict]
-        interp_opinions = [
-            final_opinions[n] for n in final_opinions if n not in bias_dict
-        ]
-
-        ax_hist.hist(
-            [orig_opinions, interp_opinions],
-            bins=30,
-            range=(-1.5, 1.5),
-            stacked=True,
-            edgecolor="black",
-            alpha=0.7,
-            label=["Original", "Interpolated"],
-        )
-        ax_hist.legend()
-    else:
-        ax_hist.hist(
-            opinion_values, bins=30, range=(-1.5, 1.5), edgecolor="black", alpha=0.7
-        )
-
-    patches = ax_hist.patches
-    for patch in patches:
-        x = patch.get_x() + patch.get_width() / 2  # type: ignore
-        patch.set_facecolor(cmap(norm(x)))
-
-    ax_hist.set_title(
-        f"{URL_SOURCE.capitalize()} User Opinion Distribution {TOPIC_NAME} (Min {MIN_URL} URLs)\nInterpolated: {INTERPOLATE}",
-        fontsize=14,
-    )
-    ax_hist.set_xlabel("Opinion (-1.5 to 1.5)", fontsize=12)
-    ax_hist.set_ylabel("# Users", fontsize=12)
-    ax_hist.set_xlim(-1.6, 1.6)
-    ax_hist.grid(axis="y", linestyle="--", alpha=0.7)
-    plt.tight_layout()
-
-    OUTPUT_PLOT.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(OUTPUT_PLOT, dpi=300)
-    print(f"Visualization saved to {OUTPUT_PLOT}")
-
 
 if __name__ == "__main__":
     process_user_bias_network()

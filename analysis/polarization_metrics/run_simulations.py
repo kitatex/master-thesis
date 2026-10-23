@@ -63,7 +63,7 @@ INTERPOLATED = True
 
 # Default Leiden modularity resolution (gamma = 1.0)
 LEIDEN_RESOLUTION = 1.0
-N_SIMULATIONS = 100
+N_SIMULATIONS = 1000
 
 # RWC settings per simulation run:
 # Since we already run 100 outer simulations per topic, 10 RWC seed resamples x 1000 walks
@@ -73,7 +73,7 @@ RWC_WALKS_PER_SIDE = 1000
 RWC_SEED_FRACTION = 0.10
 
 OUTPUT_DIR = (TOPICS_PATH / "_polarization_results").resolve()
-OUTPUT_CSV = OUTPUT_DIR / "polarization_simulations_n100.csv"
+OUTPUT_CSV = OUTPUT_DIR / f"polarization_simulations_n{N_SIMULATIONS}.csv"
 
 
 # ==========================================

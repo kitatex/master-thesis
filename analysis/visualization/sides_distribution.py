@@ -5,7 +5,7 @@ import numpy as np
 from config.paths import TOPICS_PATH
 
 
-TOPIC_NAME = "covid-19"
+TOPIC_NAME = "0 pokemon"
 
 MIN_RP = 2
 MIN_URL = 3
