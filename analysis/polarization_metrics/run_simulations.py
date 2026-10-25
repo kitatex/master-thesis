@@ -8,8 +8,7 @@ from tqdm import tqdm
 
 from config.paths import TOPICS_PATH
 
-# Modular imports from your pipeline (works whether run from repo root or analysis/)
-
+from analysis.polarization_metrics.welch_t_test import compute_welch_arrays
 from analysis.partition.leiden_meta import (
     get_opinion_graph_path,
     extract_giant_component,
@@ -218,11 +217,20 @@ def simulate_single_partition_and_measure(
     rwc_score = rwc_stats["mean"]
     rwc_internal_std = rwc_stats["std"]
 
-    # 4. Compute Opinion-Structural Polarization Measure (Point-Biserial Correlation)
+    # 4. Compute Opinion-Structural Polarization Measure (Point-Biserial & Welch's t-test)
     r_pb_all, p_val_all = compute_point_biserial_arrays(
         node_sides[all_idx], all_ops, canonical_orient=True
     )
     r_pb_seed, p_val_seed = compute_point_biserial_arrays(
+        node_sides[prepped["seed_valid_idx"]],
+        prepped["seed_opinions"],
+        canonical_orient=True,
+    )
+
+    welch_t_all, welch_p_all, opinion_diff_all = compute_welch_arrays(
+        node_sides[all_idx], all_ops, canonical_orient=True
+    )
+    welch_t_seed, welch_p_seed, opinion_diff_seed = compute_welch_arrays(
         node_sides[prepped["seed_valid_idx"]],
         prepped["seed_opinions"],
         canonical_orient=True,
@@ -233,6 +241,12 @@ def simulate_single_partition_and_measure(
         "p_value": p_val_all,
         "r_pb_seed_only": r_pb_seed,
         "p_value_seed_only": p_val_seed,
+        "welch_t": welch_t_all,
+        "welch_p": welch_p_all,
+        "opinion_diff": opinion_diff_all,
+        "welch_t_seed_only": welch_t_seed,
+        "welch_p_seed_only": welch_p_seed,
+        "opinion_diff_seed_only": opinion_diff_seed,
         "rwc": rwc_score,
         "rwc_mc_std": rwc_internal_std,
         "ac": ac_score,

@@ -18,11 +18,10 @@ OUTPUT_STATS_CSV = RESULTS_DIR / "table_metric_comparison_summary.csv"
 # Map CSV columns to clean Thesis labels
 # (Uncomment "r_pb_seed_only" if you also want a 5th violin for Seed-Only OPC!)
 METRICS = {
-    "ac": "AC\n(Assortativity)",
-    "aei": "AEI\n(Adaptive E-I)",
-    "rwc": "RWC\n(Random Walk)",
-    "r_pb": "OPC ($r_{pb}$)\n(Opinion-Struct.)",
-    # "r_pb_seed_only": "OPC ($r_{pb}$)\n(Seeds Only)",
+    "ac": "AC",
+    "aei": "AEI",
+    "rwc": "RWC",
+    "r_pb_seed_only": "OPC",
 }
 
 GROUP_POL = "Political"
@@ -209,22 +208,22 @@ def plot_garimella_beanplot(df_long: pd.DataFrame, df_topic_means: pd.DataFrame)
     # Reference zero line
     ax.axhline(0.0, color="black", linestyle=":", linewidth=1.2, alpha=0.7)
 
-    ax.set_ylabel("Polarization / Controversy Score", fontsize=13, fontweight="bold")
+    ax.set_ylabel("Controversy Score", fontsize=13, fontweight="bold")
     ax.set_xlabel("")
     ax.set_ylim(-0.15, 1.08)
     ax.grid(axis="y", linestyle="--", alpha=0.4)
 
     # Clean custom legend matching Garimella et al.
     pol_patch = mpatches.Patch(
-        facecolor="#222222", edgecolor="black", label="Political (Controversial)"
+        facecolor="#222222", edgecolor="black", label="Political"
     )
     ctrl_patch = mpatches.Patch(
-        facecolor="#cccccc", edgecolor="black", label="Non-Controversial (Control)"
+        facecolor="#cccccc", edgecolor="black", label="Non-Political"
     )
     mean_line = plt.Line2D([0], [0], color="black", linewidth=2.2, label="Group Mean")  # type: ignore
     ax.legend(
         handles=[pol_patch, ctrl_patch, mean_line],
-        loc="lower right",
+        loc="upper right",
         frameon=True,
         edgecolor="black",
         fancybox=False,

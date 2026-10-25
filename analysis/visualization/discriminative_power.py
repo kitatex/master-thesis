@@ -20,7 +20,7 @@ METRICS = {
     "ac": "AC",
     "aei": "AEI",
     "rwc": "RWC",
-    "r_pb": "OPC ($r_{pb}$)",
+    "r_pb_seed_only": "OPC",
 }
 
 GROUP_POL = "Political"
@@ -31,13 +31,6 @@ SHOW_SE_BARS_ON_DELTA = True
 
 
 def compute_simple_differences(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Computes the simple mean difference between Political (n=6) and
-    Control (n=6) topic means:
-        Delta = Mean(Political) - Mean(Control)
-    Along with the standard error of the difference (from Welch's t-test).
-    No bootstrapping or Cohen's d needed!
-    """
     records = []
 
     for m_key, m_label in METRICS.items():
@@ -78,22 +71,25 @@ def plot_topic_breakdown(df: pd.DataFrame):
     Shows the exact Mean ± SD (across the 100 runs) for all 12 topics,
     plus the vertical Group Mean lines.
     """
+    df = df.copy()
+    df["topic"] = df["topic"].str.replace(r"^0 ", "", regex=True)
+
     sns.set_theme(style="whitegrid", context="paper", font_scale=1.15)
     available_keys = [k for k in METRICS.keys() if k in df.columns]
 
     fig, axes = plt.subplots(1, len(available_keys), figsize=(13, 5.5), sharey=True)
-    palette = {GROUP_POL: "#d95f02", GROUP_CTRL: "#7570b3"}
+    palette = {GROUP_POL: "#8500c8", GROUP_CTRL: "#787979"}
 
     # Order topics: Political on top (sorted by mean r_pb), Control on bottom
-    rpb_means = df.groupby(["group", "topic"])["r_pb"].mean().reset_index()
+    rpb_means = df.groupby(["group", "topic"])["r_pb_seed_only"].mean().reset_index()
     pol_order = (
         rpb_means[rpb_means["group"] == GROUP_POL]
-        .sort_values("r_pb", ascending=False)["topic"]
+        .sort_values("r_pb_seed_only", ascending=False)["topic"]
         .tolist()
     )
     ctrl_order = (
         rpb_means[rpb_means["group"] == GROUP_CTRL]
-        .sort_values("r_pb", ascending=False)["topic"]
+        .sort_values("r_pb_seed_only", ascending=False)["topic"]
         .tolist()
     )
     topic_order = pol_order + ctrl_order
@@ -141,14 +137,11 @@ def plot_topic_breakdown(df: pd.DataFrame):
             len(pol_order) - 0.5, color="black", linestyle="-", linewidth=1.0, alpha=0.5
         )
 
-        ax.set_title(rf"{m_label}\n($\Delta = {diff:+.2f}$)", fontweight="bold")
+        ax.set_title(rf"{m_label} ($\Delta = {diff:+.2f}$)", fontweight="bold")
         ax.set_xlabel(r"Score (Mean $\pm$ SD)")
         ax.set_xlim(-0.05, 1.05)
 
-        if col_idx == 0:
-            ax.set_ylabel("Discussion Topic", fontweight="bold")
-        else:
-            ax.set_ylabel("")
+        ax.set_ylabel("")
 
     # Add a single clean legend at the top of the figure
     pol_dot = mlines.Line2D(
@@ -167,7 +160,7 @@ def plot_topic_breakdown(df: pd.DataFrame):
         marker="o",
         linestyle="None",
         markersize=7,
-        label=r"Control Topic (Mean $\pm$ SD)",
+        label=r"Non-Political Topic (Mean $\pm$ SD)",
     )
     pol_line = mlines.Line2D(
         [],
@@ -175,7 +168,7 @@ def plot_topic_breakdown(df: pd.DataFrame):
         color=palette[GROUP_POL],
         linestyle="--",
         linewidth=1.6,
-        label="Political Group Mean",
+        label="Political Topics Mean",
     )
     ctrl_line = mlines.Line2D(
         [],
@@ -183,7 +176,7 @@ def plot_topic_breakdown(df: pd.DataFrame):
         color=palette[GROUP_CTRL],
         linestyle=":",
         linewidth=1.6,
-        label="Control Group Mean",
+        label="Non-Political Topics Mean",
     )
 
     fig.legend(
@@ -215,7 +208,7 @@ def plot_mean_difference_bar(diff_df: pd.DataFrame):
     y_pos = np.arange(len(diff_df))
     # Highlight positive discriminative gap in orange/green, near-zero/negative in grey
     bar_colors = [
-        "#d95f02" if row["metric_key"] == "r_pb" else "#888888"
+        "#d95f02" if row["metric_key"] == "r_pb_seed_only" else "#888888"
         for _, row in diff_df.iterrows()
     ]
 
@@ -238,16 +231,12 @@ def plot_mean_difference_bar(diff_df: pd.DataFrame):
     ax.invert_yaxis()
 
     xlabel = (
-        r"Mean Difference: $\Delta = \mu_{\mathrm{Political}} - \mu_{\mathrm{Control}}$ ($\pm$ SE)"
+        r"Mean Difference: $\Delta = \mu_{\mathrm{political}} - \mu_{\mathrm{nonpolitical}}$ ($\pm$ SE)"
         if SHOW_SE_BARS_ON_DELTA
-        else r"Mean Difference: $\Delta = \mu_{\mathrm{Political}} - \mu_{\mathrm{Control}}$"
+        else r"Mean Difference: $\Delta = \mu_{\mathrm{political}} - \mu_{\mathrm{nonpolitical}}$"
     )
+
     ax.set_xlabel(xlabel, fontweight="bold")
-    ax.set_title(
-        "Discriminative Power: Separation Between Political and Control Topics",
-        fontweight="bold",
-        pad=12,
-    )
 
     # Add clean text labels next to each bar
     min_x = min(0.0, (diff_df["raw_diff"] - diff_df["se_diff"]).min())
