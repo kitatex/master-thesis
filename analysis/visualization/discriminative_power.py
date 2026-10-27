@@ -78,7 +78,7 @@ def plot_topic_breakdown(df: pd.DataFrame):
     available_keys = [k for k in METRICS.keys() if k in df.columns]
 
     fig, axes = plt.subplots(1, len(available_keys), figsize=(13, 5.5), sharey=True)
-    palette = {GROUP_POL: "#8500c8", GROUP_CTRL: "#787979"}
+    palette = {GROUP_POL: "#171717", GROUP_CTRL: "#9a9999"}
 
     # Order topics: Political on top (sorted by mean r_pb), Control on bottom
     rpb_means = df.groupby(["group", "topic"])["r_pb_seed_only"].mean().reset_index()

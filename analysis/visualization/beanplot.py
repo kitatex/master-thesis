@@ -215,10 +215,10 @@ def plot_garimella_beanplot(df_long: pd.DataFrame, df_topic_means: pd.DataFrame)
 
     # Clean custom legend matching Garimella et al.
     pol_patch = mpatches.Patch(
-        facecolor="#222222", edgecolor="black", label="Political"
+        facecolor="#171717", edgecolor="black", label="Political"
     )
     ctrl_patch = mpatches.Patch(
-        facecolor="#cccccc", edgecolor="black", label="Non-Political"
+        facecolor="#9a9999", edgecolor="black", label="Non-Political"
     )
     mean_line = plt.Line2D([0], [0], color="black", linewidth=2.2, label="Group Mean")  # type: ignore
     ax.legend(
